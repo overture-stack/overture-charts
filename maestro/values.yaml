@@ -1,0 +1,125 @@
+# Default values for maestro.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: overture/maestro
+  tag: edge
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 11235
+
+ingress:
+  enabled: false
+  annotations: {}
+  hosts:
+    - host: maestro.local
+      paths: []
+
+  tls: []
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+appConfig:
+  server:
+    port: 80
+  maestro:
+    kafka:
+      broker: localhost:9092
+      indexing-topic: maestro-index-requests
+    song:
+      max-retries: 3
+      timeout-sec: 100 # some studies take really long, +30 secs, to be downloaded
+      indexable-study-status: PUBLISHED #,UNPUBLISHED,SUPPRESSED
+    exclusion-rules:
+      # exclusion rules file name
+      file-name: exclusion-rules.yml
+
+    # elastic search server & client props
+    elasticsearch:
+      cluster-nodes: localhost:9200, localhost:9201
+      indexes:
+        file-centric:
+          alias: file_centric
+      client:
+        # this is to control the number of documents per bulk request in elasticsearch
+        docs-per-bulk-req-max: 5000
+        # max time to wait for a connection to be established
+        connection-timeout: 5000
+        # max time to wait on idle connection (no data flow)
+        socket-timeout: 10000
+        retry:
+          max-attempts: 3
+          wait-duration-millis: 500
+
+    # Genome file repositories props
+    repositories:
+        # must be unique
+      - code: collab
+        url: https://song.cancercollaboratory.org
+        name: collaboratory
+        dataPath: /oicr.icgc/data
+        metadataPath: /oicr.icgc.meta/metadata
+        # optional
+        storageType: S3
+        organization: ICGC
+        country: CA
+      - code: aws
+        url: https://virginia.song.icgc.org
+        name: aws virginia
+        metadataPath: /oicr.icgc.meta/metadata
+        # optional
+        storageType: S3
+        organization: ICGC
+        country: US
+
+    # last resort fallback file system log in case of retries exhaustion.
+    failure-log:
+      enabled: true
+      dir: ${user.home}/logs/maestro
+
+  # logging & monitoring
+  logging:
+    level:
+      root: INFO
+      bio.overture: TRACE
+      # very verbose class, only enable lower level when necessary
+      bio.overture.maestro.domain.entities.indexing.rules.IDExclusionRule: INFO
+      org.apache.kafka.clients: WARN
+
+  # spring boot actuator endpoints
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: '*'
+    endpoint:
+      health:
+        show-details: ALWAYS
+
+  spring:
+    application:
+      name: maestro
+    output.ansi.enabled: ALWAYS
+    cloud:
+      stream:
+        kafka:
+          binder:
+            brokers: ${maestro.kafka.broker}
+        bindings:
+          input:
+            # we don't specify content type because @StreamListener will handle that
+            destination: ${maestro.kafka.indexing-topic}
