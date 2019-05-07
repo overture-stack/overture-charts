@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: overture/maestro
-  tag: edge
+  tag: test
   pullPolicy: IfNotPresent
 
 nameOverride: ""
@@ -38,7 +38,7 @@ appConfig:
     port: 80
   maestro:
     kafka:
-      broker: localhost:9092
+      broker: bashar:9092
       indexing-topic: maestro-index-requests
     song:
       max-retries: 3
@@ -67,7 +67,7 @@ appConfig:
 
     # Genome file repositories props
     repositories:
-        # must be unique
+      # must be unique
       - code: collab
         url: https://song.cancercollaboratory.org
         name: collaboratory
@@ -98,7 +98,7 @@ appConfig:
       bio.overture: TRACE
       # very verbose class, only enable lower level when necessary
       bio.overture.maestro.domain.entities.indexing.rules.IDExclusionRule: INFO
-      org.apache.kafka.clients: WARN
+      org.apache.kafka.clients: INFO
 
   # spring boot actuator endpoints
   management:

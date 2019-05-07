@@ -19,13 +19,27 @@ spec:
         app.kubernetes.io/name: {{ include "maestro.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      # create a volume for the application config map
+      volumes:
+        - name: maestro-config-volume
+          configMap:
+            name: maestro-app-config
+            items:
+              - key: application.yml
+                path: application.yml
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          envFrom:
-          - configMapRef:
-              name: maestro-config
+          # mount the config map as a file in the volume specified by the image
+          volumeMounts:
+            - name: maestro-config-volume
+              mountPath: "/app-config"
+              readOnly: true
+          # configure spring to read from the mounted volume path above.
+          env:
+            - name: spring.config.location
+              value: "file:/app-config/"
           ports:
             - name: http
               containerPort: 80
@@ -41,9 +55,8 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      nodeS
+      nd }}
     {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
