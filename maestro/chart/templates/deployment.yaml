@@ -18,6 +18,9 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "maestro.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+      # https://github.com/helm/helm/blob/master/docs/charts_tips_and_tricks.md#automatically-roll-deployments-when-configmaps-or-secrets-change
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configMap.yaml") . | sha256sum }}
     spec:
       # create a volume for the application config map
       volumes:
