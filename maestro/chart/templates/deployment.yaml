@@ -38,7 +38,7 @@ spec:
               readOnly: true
           # configure spring to read from the mounted volume path above.
           env:
-            - name: spring.config.location
+            - name: SPRING_CONFIG_LOCATION
               value: "file:/app-config/"
           ports:
             - name: http
@@ -55,13 +55,14 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
-      nodeS
-      nd }}
-    {{- with .Values.affinity }}
-      affinity:
+      nodeSelector:
         {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+    affinity:
+      {{- toYaml . | nindent 8 }}
     {{- end }}
     {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
+    tolerations:
+      {{- toYaml . | nindent 8 }}
     {{- end }}
