@@ -1,12 +1,8 @@
 kind: ConfigMap
 apiVersion: v1
+metadata:
+  name: maestro-app-config
 data:
   application.yml: |
     {{- toYaml .Values.appConfig | nindent 4 }}
-metadata:
-  creationTimestamp: "2019-05-07T13:42:13Z"
-  name: maestro-app-config
-  namespace: default
-  resourceVersion: "1458"
-  selfLink: /api/v1/namespaces/default/configmaps/spring-app-config
-  uid: eb6a507a-70cd-11e9-a398-0242e3bb336d
+
