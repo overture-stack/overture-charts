@@ -1,0 +1,13 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: maestro-error-logs-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.errorslogVolume.size | quote }}
+{{- if .Values.errorslogVolume.storageClass }}
+  storageClassName: {{ .Values.errorslogVolume.storageClass }}
+{{- end }}

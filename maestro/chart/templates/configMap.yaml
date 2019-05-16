@@ -1,8 +1,0 @@
-kind: ConfigMap
-apiVersion: v1
-metadata:
-  name: maestro-app-config
-data:
-  application.yml: |
-    {{- toYaml .Values.appConfig | nindent 4 }}
-
