@@ -1,7 +1,11 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: maestro-error-logs-claim
+  name: {{ include "maestro.name" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "maestro.name" . }}
+    helm.sh/chart: {{ include "maestro.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
   accessModes:
     - ReadWriteOnce
