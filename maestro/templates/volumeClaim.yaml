@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ include "maestro.name" . }}
+  name: {{ include "maestro.fullname" . }}
   labels:
     app.kubernetes.io/name: {{ include "maestro.name" . }}
     helm.sh/chart: {{ include "maestro.chart" . }}
