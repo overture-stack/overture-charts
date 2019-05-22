@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: overture/maestro
-  tag: 0.1.0-SNAPSHOT
+  tag: latest
   pullPolicy: IfNotPresent
 
 nameOverride: ""
