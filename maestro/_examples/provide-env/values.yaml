@@ -90,7 +90,7 @@ extraEnv:
     value: "true"
 
   - name : MAESTRO_FAILURE_LOG_DIR
-    value: "/app-logs"
+    value: "/app-data/logs"
 
   - name : LOGGING_LEVEL_ROOT
     value: "INFO"

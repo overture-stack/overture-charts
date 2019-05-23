@@ -20,16 +20,16 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       volumes:
-        - name: error-logs
+        - name: app-data
           persistentVolumeClaim:
-            claimName: maestro-error-logs-claim
+            claimName: {{ include "maestro.fullname" . }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
-            - mountPath: /app-logs
-              name: error-logs
+            - mountPath: /app-data
+              name: app-data
           env:
           - name: SERVER_PORT
             value: "{{ .Values.containerPort }}"
