@@ -17,6 +17,9 @@ rollback:
 delete:
 	helm del --purge maestro
 
+example-template:
+	helm template --values ./provide-env/values.yaml ../.
+
 run-example-provide-env:
 	docker-compose -f docker-compose.dev.yml up -d
 	helm upgrade --install maestro --values ./provide-env/values.yaml ../.

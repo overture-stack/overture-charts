@@ -33,7 +33,7 @@ tolerations: []
 
 affinity: {}
 
-extraEnv: []
+extraEnv: {}
 
 errorslogVolume:
   size: 1Gi
