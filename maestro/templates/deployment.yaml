@@ -28,11 +28,13 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
-            - mountPath: /app-data
+            - mountPath: {{ .Values.appVolume.mountPath }}
               name: app-data
           env:
           - name: SERVER_PORT
             value: "{{ .Values.containerPort }}"
+          - name: MAESTRO_FAILURELOG_DIR
+            value: {{ .Values.appVolume.mountPath }}/errors/
 {{- if .Values.extraEnv }}
   {{ range $key, $value := .Values.extraEnv }}
           - name: {{ $key }}

@@ -35,8 +35,9 @@ affinity: {}
 
 extraEnv: {}
 
-errorslogVolume:
+appVolume:
   size: 1Gi
   storageClass: standard
+  mountPath: /app-data
 
 containerPort: 80

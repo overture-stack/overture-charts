@@ -48,7 +48,7 @@ sh:
 	kubectl exec -it $(POD_NAME) sh
 
 errors:
-	kubectl exec $(POD_NAME) cat /app-logs/failures.log
+	kubectl exec $(POD_NAME) cat /app-data/failures.log
 
 logs:
 	kubectl logs $(POD_NAME)

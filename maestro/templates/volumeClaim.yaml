@@ -11,7 +11,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.errorslogVolume.size | quote }}
-{{- if .Values.errorslogVolume.storageClass }}
-  storageClassName: {{ .Values.errorslogVolume.storageClass }}
+      storage: {{ .Values.appVolume.size | quote }}
+{{- if .Values.appVolume.storageClass }}
+  storageClassName: {{ .Values.appVolume.storageClass }}
 {{- end }}
