@@ -22,7 +22,6 @@ ingress:
   hosts:
     - host: maestro.local
       paths: []
-
   tls: []
 
 resources: {}

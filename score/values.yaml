@@ -1,0 +1,55 @@
+# Default values for score.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: overture/score-server
+  tag: test04
+  ImagePullPolicy: Always
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+  hosts:
+    - score.local
+  tls: []
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+extraEnv: {}
+
+appConfig:
+  authServer:
+    clientID: 
+    clientSecret: 
+    URL: https://ego.local/api/o/check_token
+    uploadScope: scoreqa.WRITE
+    downloadScope: scoreqa.READ
+  objectStorage:
+    accessKey: 
+    secretKey: 
+    URL: https://object.local
+  song:  
+    serverUrl: https://song.local
+  storageServer:
+    dataBucket: qa.icgc
+    dataDir: data
+    JMXPort: "10018"
+    sentinel: heliograph
+    port: "80"
+    stateBucket: qa.icgc

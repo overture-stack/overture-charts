@@ -1,17 +1,17 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "maestro.fullname" . -}}
+{{- $fullName := include "song.server.fullname" . -}}
+{{- $ingressPath := .Values.ingress.path -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    app.kubernetes.io/name: {{ include "maestro.name" . }}
-    helm.sh/chart: {{ include "maestro.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app: {{ include "song.name" . }}
+    chart: {{ include "song.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 {{- with .Values.ingress.annotations }}
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 {{ toYaml . | indent 4 }}
 {{- end }}
 spec:
@@ -27,14 +27,12 @@ spec:
 {{- end }}
   rules:
   {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
+    - host: {{ . | quote }}
       http:
         paths:
-        {{- range .paths }}
-          - path: {{ . }}
+          - path: {{ $ingressPath }}
             backend:
               serviceName: {{ $fullName }}
               servicePort: http
-        {{- end }}
   {{- end }}
 {{- end }}

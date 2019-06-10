@@ -1,19 +1,19 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "maestro.fullname" . -}}
+{{- $fullName := include "score.fullname" . -}}
+{{- $ingressPath := .Values.ingress.path -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    app.kubernetes.io/name: {{ include "maestro.name" . }}
-    helm.sh/chart: {{ include "maestro.chart" . }}
+    app.kubernetes.io/name: {{ include "score.name" . }}
+    helm.sh/chart: {{ include "score.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{- with .Values.ingress.annotations }}
+  {{- with .Values.ingress.annotations }}
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-{{ toYaml . | indent 4 }}
-{{- end }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
 {{- if .Values.ingress.tls }}
   tls:
@@ -27,14 +27,12 @@ spec:
 {{- end }}
   rules:
   {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
+    - host: {{ . | quote }}
       http:
         paths:
-        {{- range .paths }}
-          - path: {{ . }}
+          - path: {{ $ingressPath }}
             backend:
               serviceName: {{ $fullName }}
-              servicePort: http
-        {{- end }}
+              servicePort: 80
   {{- end }}
 {{- end }}
