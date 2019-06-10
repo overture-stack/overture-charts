@@ -1,0 +1,68 @@
+# Default values for song.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: overture/song
+  tag: 1.2.0-alpine
+  pullPolicy: IfNotPresent
+
+backupImage:
+  repository: overture/song-postgres-backup-s3
+  tag: 0.1.6
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+  hosts:
+    - song.local
+  tls: []
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+volumeSize: 20Gi
+
+extraEnv: {}
+
+appConfig:
+  id:
+    idURL: https://id.local
+    authToken: "123" #
+    realIDs: true
+  auth:
+    server:
+      prefix: pdc
+      url: https://auth.local/oauth/check_token
+      clientID: metadata
+      clientSecret: test
+  dccStorage:
+    url: https://storage.local
+
+postgres:
+  postgresUsername: postgres
+  postgresPassword: password
+  postgresDb: song
+
+backup:
+  enabled: false
+  schedule: "1 * * * *"
+  dbName: song
+  awsAccessKey: #
+  awsSecretKey: #
+  endpointURL: "https://object.local:9080"
