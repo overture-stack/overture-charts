@@ -1,12 +1,12 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "maestro.fullname" . -}}
+{{- $fullName := include "ego.fullname" . -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    app.kubernetes.io/name: {{ include "maestro.name" . }}
-    helm.sh/chart: {{ include "maestro.chart" . }}
+    app.kubernetes.io/name: {{ include "ego.name" . }}
+    helm.sh/chart: {{ include "ego.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- with .Values.ingress.annotations }}
@@ -26,15 +26,15 @@ spec:
   {{- end }}
 {{- end }}
   rules:
-  {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
+    - host: {{ .Values.ingress.host }}
       http:
         paths:
-        {{- range .paths }}
-          - path: {{ . }}
+          - path: /api
             backend:
               serviceName: {{ $fullName }}
               servicePort: http
-        {{- end }}
-  {{- end }}
+          - path: /
+            backend:
+              serviceName: {{ $fullName }}
+              servicePort: http-ui
 {{- end }}
