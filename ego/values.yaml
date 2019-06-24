@@ -37,6 +37,12 @@ affinity: {}
 
 extraEnv: {}
 
+# choose rbac roles to enable
+rbac:
+  create:
+    # for vault kubernetes integration
+    tokenReview: true
+
 postgres:
   postgresUsername: postgres
   postgresPassword: password
