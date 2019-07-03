@@ -45,14 +45,19 @@ appConfig:
     idURL: https://id.local
     authToken: "123" #
     realIDs: true
+  flyway:
+    enabled: true
+    locations: classpath:flyway/sql,classpath:db/migration
   auth:
     server:
       prefix: pdc
+      suffix: download
       url: https://auth.local/oauth/check_token
       clientID: metadata
       clientSecret: test
-  dccStorage:
+  score:
     url: https://storage.local
+    accessToken: "321"
 
 postgres:
   postgresUsername: postgres

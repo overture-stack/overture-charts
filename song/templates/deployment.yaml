@@ -26,8 +26,6 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            - name: AUTH_SERVER_PREFIX
-              value: {{ .Values.appConfig.auth.server.prefix }}
             - name: AUTH_SERVER_URL
               value: {{ .Values.appConfig.auth.server.url }}
             - name: AUTH_SERVER_CLIENTID
@@ -37,6 +35,10 @@ spec:
                 secretKeyRef:
                   name: {{ template "song.fullname" . }}
                   key: auth-server-client-secret
+            - name: AUTH_SERVER_PREFIX
+              value: {{ .Values.appConfig.auth.server.prefix }}
+            - name: AUTH_SERVER_SUFFIX
+              value: {{ .Values.appConfig.auth.server.suffix }}
             - name: ID_IDURL
               value: {{ .Values.appConfig.id.idURL }}
             - name: ID_AUTHTOKEN
@@ -46,8 +48,14 @@ spec:
                   key: id-authtoken
             - name: ID_REALIDS
               value: {{ .Values.appConfig.id.realIDs }}
-            - name: DCCSTORAGE_URL
-              value: {{ .Values.appConfig.dccStorage.url }}
+            - name: SCORE_URL
+              value: {{ .Values.appConfig.score.url }}
+            - name: SCORE_ACCESSTOKEN
+              value: {{ .Values.appConfig.score.accessToken }}
+            - name: SPRING_FLYWAY_ENABLED
+              value: {{ .Values.appConfig.flyway.enabled }}
+            - name: SPRING_FLYWAY_LOCATIONS
+              value: {{ .Values.appConfig.flyway.locations}}
             - name: SPRING_DATASOURCE_URL
               value: jdbc:postgresql://{{ template "song.fullname" . }}-postgres:5432/{{ .Values.postgres.postgresDb }}?stringtype=unspecified
             - name: SPRING_DATASOURCE_USERNAME
