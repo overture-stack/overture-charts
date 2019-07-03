@@ -51,7 +51,10 @@ spec:
             - name: SCORE_URL
               value: {{ .Values.appConfig.score.url }}
             - name: SCORE_ACCESSTOKEN
-              value: {{ .Values.appConfig.score.accessToken }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "song.fullname" . }}
+                  key: score-accessToken
             - name: SPRING_FLYWAY_ENABLED
               value: {{ .Values.appConfig.flyway.enabled }}
             - name: SPRING_FLYWAY_LOCATIONS
