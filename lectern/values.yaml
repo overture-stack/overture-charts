@@ -48,3 +48,10 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+appConfig:
+  port: 3000
+  mongoHost: 
+  mongoPort:
+  mongoUser:
+  mongoPass:
