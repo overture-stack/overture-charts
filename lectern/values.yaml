@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: overture/lectern
   tag: edge
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 imagePullSecrets: []
 nameOverride: ""
