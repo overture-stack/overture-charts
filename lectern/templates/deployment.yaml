@@ -24,9 +24,20 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: PORT
+            value: {{ .Values.appConfig.port }}
+          - name: MONGO_HOST
+            value: {{ .Values.appConfig.mongoHost }}
+          - name: MONGO_PORT
+            value: {{ .Values.appConfig.mongoPort }}
+          - name: MONGO_USER
+            value: {{ .Values.appConfig.mongoUser }}
+          - name: MONGO_PASS
+            value: {{ .Values.appConfig.mongoPass }}
           ports:
             - name: http
-              containerPort: 3000
+              containerPort: {{ .Values.appConfig.port }}
               protocol: TCP
           livenessProbe:
             httpGet:
