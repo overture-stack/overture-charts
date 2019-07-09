@@ -26,15 +26,15 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           - name: PORT
-            value: {{ .Values.appConfig.port }}
+            value: {{ .Values.appConfig.port | quote }}
           - name: MONGO_HOST
-            value: {{ .Values.appConfig.mongoHost }}
+            value: {{ .Values.appConfig.mongoHost | quote }}
           - name: MONGO_PORT
-            value: {{ .Values.appConfig.mongoPort }}
+            value: {{ .Values.appConfig.mongoPort | quote }}
           - name: MONGO_USER
-            value: {{ .Values.appConfig.mongoUser }}
+            value: {{ .Values.appConfig.mongoUser | quote }}
           - name: MONGO_PASS
-            value: {{ .Values.appConfig.mongoPass }}
+            value: {{ .Values.appConfig.mongoPass | quote }}
           ports:
             - name: http
               containerPort: {{ .Values.appConfig.port }}
