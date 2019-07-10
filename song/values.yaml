@@ -5,8 +5,8 @@
 replicaCount: 1
 
 image:
-  repository: overture/song
-  tag: 1.2.0-alpine
+  repository: overture/song-server
+  tag: 1.5.0
   pullPolicy: IfNotPresent
 
 backupImage:
@@ -43,8 +43,8 @@ extraEnv: {}
 appConfig:
   id:
     idURL: https://id.local
-    authToken: "123" #
-    realIDs: true
+    authToken: "123"
+    realIDs: false
   flyway:
     enabled: true
     locations: classpath:flyway/sql,classpath:db/migration

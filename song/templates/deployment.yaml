@@ -47,7 +47,7 @@ spec:
                   name: {{ template "song.fullname" . }}
                   key: id-authtoken
             - name: ID_REALIDS
-              value: {{ .Values.appConfig.id.realIDs }}
+              value: {{ .Values.appConfig.id.realIDs | quote }}
             - name: SCORE_URL
               value: {{ .Values.appConfig.score.url }}
             - name: SCORE_ACCESSTOKEN
@@ -56,7 +56,7 @@ spec:
                   name: {{ template "song.fullname" . }}
                   key: score-accessToken
             - name: SPRING_FLYWAY_ENABLED
-              value: {{ .Values.appConfig.flyway.enabled }}
+              value: {{ .Values.appConfig.flyway.enabled | quote }}
             - name: SPRING_FLYWAY_LOCATIONS
               value: {{ .Values.appConfig.flyway.locations}}
             - name: SPRING_DATASOURCE_URL
