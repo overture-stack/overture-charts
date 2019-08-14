@@ -56,5 +56,5 @@ appConfig:
   mongoUser:
   mongoPass:
   authEnabled: false
-  egoAPI: 
+  egoApi: 
   scope: PROGRAMSERVICE.WRITE
