@@ -55,3 +55,6 @@ appConfig:
   mongoPort:
   mongoUser:
   mongoPass:
+  authEnabled: false
+  egoAPI: 
+  scope: PROGRAMSERVICE.WRITE

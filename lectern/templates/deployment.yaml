@@ -35,6 +35,12 @@ spec:
             value: {{ .Values.appConfig.mongoUser | quote }}
           - name: MONGO_PASS
             value: {{ .Values.appConfig.mongoPass | quote }}
+          - name: AUTH_ENABLED
+            value: {{ .Values.appConfig.authEnabled }}
+          - name: EGO_API
+            value: {{ .Values.appConfig.egoApi | quote }}
+          - name: SCOPE
+            value: {{ .Values.appConfig.scope | quote }}
           ports:
             - name: http
               containerPort: {{ .Values.appConfig.port }}
