@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: overture/maestro
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 nameOverride: ""
 fullnameOverride: ""
@@ -32,7 +32,14 @@ tolerations: []
 
 affinity: {}
 
+# use this to inject all the env vars you need to override application.yaml
+# see _examples/provide-env/values.yaml
 extraEnv: {}
+
+# this is useful to integrate with vault 
+rbac:
+  create:
+    tokenReview: false
 
 appVolume:
   size: 1Gi
