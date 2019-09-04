@@ -50,8 +50,11 @@ appConfig:
     locations: classpath:flyway/sql,classpath:db/migration
   auth:
     server:
-      prefix: pdc
-      suffix: download
+      scope:
+        study:
+          prefix: "song."
+          suffix: ".WRITE"
+        system: "song.WRITE"
       url: https://auth.local/oauth/check_token
       clientID: metadata
       clientSecret: test

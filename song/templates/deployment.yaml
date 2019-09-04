@@ -35,10 +35,12 @@ spec:
                 secretKeyRef:
                   name: {{ template "song.fullname" . }}
                   key: auth-server-client-secret
-            - name: AUTH_SERVER_PREFIX
-              value: {{ .Values.appConfig.auth.server.prefix }}
-            - name: AUTH_SERVER_SUFFIX
-              value: {{ .Values.appConfig.auth.server.suffix }}
+            - name: AUTH_SERVER_SCOPE_STUDY_PREFIX
+              value: {{ .Values.appConfig.auth.server.scope.study.prefix }}
+            - name: AUTH_SERVER_SCOPE_STUDY_SUFFIX
+              value: {{ .Values.appConfig.auth.server.scope.study.suffix }}
+            - name: AUTH_SERVER_SCOPE_SYSTEM
+              value: {{ .Values.appConfig.auth.server.scope.system }}
             - name: ID_IDURL
               value: {{ .Values.appConfig.id.idURL }}
             - name: ID_AUTHTOKEN
