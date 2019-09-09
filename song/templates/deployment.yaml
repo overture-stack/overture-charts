@@ -26,6 +26,8 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: {{ .Values.appConfig.profiles }}
             - name: AUTH_SERVER_URL
               value: {{ .Values.appConfig.auth.server.url }}
             - name: AUTH_SERVER_CLIENTID
