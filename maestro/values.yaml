@@ -42,8 +42,6 @@ rbac:
     tokenReview: false
 
 appVolume:
-  size: 1Gi
-  storageClass: standard
   mountPath: /app-data
 
 containerPort: 80
