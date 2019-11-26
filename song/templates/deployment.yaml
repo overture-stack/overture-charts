@@ -43,15 +43,19 @@ spec:
               value: {{ .Values.appConfig.auth.server.scope.study.suffix }}
             - name: AUTH_SERVER_SCOPE_SYSTEM
               value: {{ .Values.appConfig.auth.server.scope.system }}
-            - name: ID_IDURL
-              value: {{ .Values.appConfig.id.idURL }}
-            - name: ID_AUTHTOKEN
+            - name: ID_USELOCAL
+              value: {{ .Values.appConfig.id.useLocal | quote }}
+            - name: ID_FEDERATED_AUTH_BEARER_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: {{ template "song.fullname" . }}
                   key: id-authtoken
-            - name: ID_REALIDS
-              value: {{ .Values.appConfig.id.realIDs | quote }}
+            - name: ID_FEDERATED_URITEMPLATE_DONOR
+              value: {{ .Values.appConfig.id.federated.uriTemplate.donor }}
+            - name: ID_FEDERATED_URITEMPLATE_SPECIMEN
+              value: {{ .Values.appConfig.id.federated.uriTemplate.specimen }}
+            - name: ID_FEDERATED_URITEMPLATE_SAMPLE
+              value: {{ .Values.appConfig.id.federated.uriTemplate.sample }}
             - name: SCORE_URL
               value: {{ .Values.appConfig.score.url }}
             - name: SCORE_ACCESSTOKEN
