@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: overture/song-server
-  tag: 2.0.0
+  tag: 3.0.0
   pullPolicy: IfNotPresent
 
 backupImage:
@@ -43,9 +43,15 @@ extraEnv: {}
 appConfig:
   profiles: "prod,secure,default"
   id:
-    idURL: https://id.local
-    authToken: "123"
-    realIDs: false
+    useLocal: true
+    federated:
+      auth:
+        bearer:
+          token: "someToken"
+      uriTemplate:
+        donor:    https://id.example.org/donor/id?submittedProjectId={studyId}&submittedDonorId={submitterId}&create=true
+        specimen: https://id.example.org/specimen/id?submittedProjectId={studyId}&submittedSpecimenId={submitterId}&create=true
+        sample:   https://id.example.org/sample/id?submittedProjectId={studyId}&submittedSampleId={submitterId}&create=true
   flyway:
     enabled: true
     locations: classpath:flyway/sql,classpath:db/migration
