@@ -54,5 +54,5 @@ appConfig:
     sentinel: heliograph
     port: "80"
     stateBucket: qa.icgc
-    partSize: 1073741824
-    connectionTimeout: 1200000
+    partSize: "1073741824"
+    connectionTimeout: "1200000"

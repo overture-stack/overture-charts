@@ -40,9 +40,9 @@ spec:
           - name: COLLABORATORY_DATA_DIRECTORY
             value: {{ .Values.appConfig.storageServer.dataDir }}
           - name: UPLOAD_PARTSIZE
-            value: {{ .Values.appConfig.storageServer.partSize }}
+            value: {{ quote .Values.appConfig.storageServer.partSize }}
           - name: UPLOAD_CONNECTION_TIMEOUT
-            value: {{ .Values.appConfig.storageServer.connectionTimeout }}
+            value: {{ quote .Values.appConfig.storageServer.connectionTimeout }}
           - name: METADATA_URL
             value: {{ .Values.appConfig.song.serverUrl }}
           - name: S3_ENDPOINT
