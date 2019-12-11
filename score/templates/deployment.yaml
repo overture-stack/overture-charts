@@ -27,36 +27,42 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: {{ .Values.appConfig.springProfiles }}
+          - name: SERVER_PORT
+            value: {{ quote .Values.appConfig.storageServer.port }}
+          - name: OBJECT_SENTINEL
+            value: {{ .Values.appConfig.storageServer.sentinel }}
+          - name: BUCKET_NAME_STATE
+            value: {{ .Values.appConfig.storageServer.stateBucket }}
+          - name: BUCKET_NAME_OBJECT
+            value: {{ .Values.appConfig.storageServer.dataBucket }}
+          - name: COLLABORATORY_DATA_DIRECTORY
+            value: {{ .Values.appConfig.storageServer.dataDir }}
+          - name: UPLOAD_PARTSIZE
+            value: {{ quote .Values.appConfig.storageServer.partSize }}
+          - name: UPLOAD_CONNECTION_TIMEOUT
+            value: {{ quote .Values.appConfig.storageServer.connectionTimeout }}
+          - name: METADATA_URL
+            value: {{ .Values.appConfig.song.serverUrl }}
+          - name: S3_ENDPOINT
+            value: {{ .Values.appConfig.objectStorage.url }}
+          - name: S3_ACCESSKEY
+            value: {{ .Values.appConfig.objectStorage.accessKey }}
+          - name: S3_SECRETKEY
+            value: {{ .Values.appConfig.objectStorage.secretKey }}
+          - name: S3_SIGV4ENABLED
+            value: {{ .Values.appConfig.objectStorage.sigV4Enabled | quote }}
+          - name: AUTH_SERVER_URL
+            value: {{ .Values.appConfig.authServer.url }}
           - name: AUTH_SERVER_CLIENTID
-            value: {{ .Values.appConfig.authServer.clientID }}
+            value: {{ .Values.appConfig.authServer.clientId }}
           - name: AUTH_SERVER_CLIENTSECRET
             value: {{ .Values.appConfig.authServer.clientSecret }}
-          - name: AUTH_SERVER_URL
-            value: {{ .Values.appConfig.authServer.URL }}
           - name: AUTH_SERVER_UPLOADSCOPE
             value: {{ .Values.appConfig.authServer.downloadScope }}
           - name: AUTH_SERVER_DOWNLOADSCOPE
             value: {{ .Values.appConfig.authServer.uploadScope }}
-          - name: OBJECT_STORAGE_ACCESS_KEY
-            value: {{ .Values.appConfig.objectStorage.accessKey }}
-          - name: OBJECT_STORAGE_SECRET_KEY
-            value: {{ .Values.appConfig.objectStorage.secretKey }}
-          - name: OBJECT_STORAGE_URL
-            value: {{ .Values.appConfig.objectStorage.URL }}
-          - name: SERVER_URL
-            value: {{ .Values.appConfig.song.serverUrl }}
-          - name: STORAGE_SERVER_DATA_BUCKET
-            value: {{ .Values.appConfig.storageServer.dataBucket }}
-          - name: STORAGE_SERVER_DATA_DIR
-            value: {{ .Values.appConfig.storageServer.dataDir }}
-          - name: STORAGE_SERVER_JMX_PORT
-            value: {{ quote .Values.appConfig.storageServer.JMXPort }}
-          - name: STORAGE_SERVER_OBJECT_SENTINEL
-            value: {{ .Values.appConfig.storageServer.sentinel }}
-          - name: STORAGE_SERVER_PORT
-            value: {{ quote .Values.appConfig.storageServer.port }}
-          - name: STORAGE_SERVER_STATE_BUCKET
-            value: {{ .Values.appConfig.storageServer.stateBucket }}
 {{- if .Values.extraEnv }}
   {{ range $key, $value := .Values.extraEnv }}
           - name: {{ $key }}

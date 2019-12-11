@@ -34,22 +34,25 @@ affinity: {}
 extraEnv: {}
 
 appConfig:
+  springProfiles: amazon,collaboratory,prod,secure
   authServer:
-    clientID: 
+    clientId: 
     clientSecret: 
-    URL: https://ego.local/api/o/check_token
+    url: https://ego.local/api/o/check_token
     uploadScope: scoreqa.WRITE
     downloadScope: scoreqa.READ
   objectStorage:
     accessKey: 
     secretKey: 
-    URL: https://object.local
+    url: https://object.local
+    sigV4Enabled: true
   song:  
     serverUrl: https://song.local
   storageServer:
     dataBucket: qa.icgc
     dataDir: data
-    JMXPort: "10018"
     sentinel: heliograph
     port: "80"
     stateBucket: qa.icgc
+    partSize: "1073741824"
+    connectionTimeout: "1200000"
