@@ -43,8 +43,8 @@ spec:
             value: {{ .Values.appConfig.scope | quote }}
 {{- if .Values.extraEnv }}
   {{ range $key, $value := .Values.extraEnv }}
-            - name: {{ $key }}
-              value: {{ $value | quote }}
+          - name: {{ $key }}
+            value: {{ $value | quote }}
   {{- end }}
 {{- end }}
           ports:
