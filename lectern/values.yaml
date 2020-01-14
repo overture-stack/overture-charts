@@ -58,3 +58,5 @@ appConfig:
   authEnabled: false
   egoApi: 
   scope: PROGRAMSERVICE.WRITE
+
+extraEnv: {}
