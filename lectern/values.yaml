@@ -60,3 +60,8 @@ appConfig:
   scope: PROGRAMSERVICE.WRITE
 
 extraEnv: {}
+
+podSecurityContext:
+  runAsGroup: 9999
+  runAsNonRoot: true
+  runAsUser: 9999
