@@ -30,6 +30,8 @@ spec:
               value: {{ .Values.appConfig.profiles }}
             - name: AUTH_SERVER_URL
               value: {{ .Values.appConfig.auth.server.url }}
+            - name: AUTH_SERVER_TOKENNAME
+              value: {{ .Values.appConfig.auth.server.tokenName }}
             - name: AUTH_SERVER_CLIENTID
               value: {{ .Values.appConfig.auth.server.clientID }}
             - name: AUTH_SERVER_CLIENTSECRET

@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: overture/song-server
-  tag: 3.0.0
+  tag: 4.0.0
   pullPolicy: IfNotPresent
 
 backupImage:
@@ -63,6 +63,7 @@ appConfig:
           suffix: ".WRITE"
         system: "song.WRITE"
       url: https://auth.local/oauth/check_token
+      tokenName: token
       clientID: metadata
       clientSecret: test
   score:

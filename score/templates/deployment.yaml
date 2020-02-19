@@ -54,6 +54,8 @@ spec:
             value: {{ .Values.appConfig.objectStorage.sigV4Enabled | quote }}
           - name: AUTH_SERVER_URL
             value: {{ .Values.appConfig.authServer.url }}
+          - name: AUTH_SERVER_TOKENNAME
+            value: {{ .Values.appConfig.authServer.tokenName }}
           - name: AUTH_SERVER_CLIENTID
             value: {{ .Values.appConfig.authServer.clientId }}
           - name: AUTH_SERVER_CLIENTSECRET
