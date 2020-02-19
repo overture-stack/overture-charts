@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: overture/score-server
-  tag: test04
+  tag: 3.0.1
   ImagePullPolicy: Always
 
 nameOverride: ""
@@ -39,6 +39,7 @@ appConfig:
     clientId: 
     clientSecret: 
     url: https://ego.local/api/o/check_token
+    tokenName: token
     uploadScope: scoreqa.WRITE
     downloadScope: scoreqa.READ
   objectStorage:
