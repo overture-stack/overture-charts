@@ -53,7 +53,7 @@ appConfig:
     dataBucket: qa.icgc
     dataDir: data
     sentinel: heliograph
-    port: "80"
+    port: "8080"
     stateBucket: qa.icgc
     partSize: "1073741824"
     connectionTimeout: "1200000"
