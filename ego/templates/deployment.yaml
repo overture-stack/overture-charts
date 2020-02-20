@@ -112,7 +112,7 @@ spec:
               value: {{ .Values.appConfig.egoClientId }}
           ports:
             - name: http-ui
-              containerPort: 80
+              containerPort: 8080
               protocol: TCP
 {{- with .Values.nodeSelector }}
       nodeSelector:
