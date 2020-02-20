@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "lectern.fullname" . }}
+  name: {{ include "rollcall.fullname" . }}
   labels:
-{{ include "lectern.labels" . | indent 4 }}
+{{ include "rollcall.labels" . | indent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "lectern.name" . }}
+      app.kubernetes.io/name: {{ include "rollcall.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "lectern.name" . }}
+        app.kubernetes.io/name: {{ include "rollcall.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
     {{- with .Values.podSecurityContext }}
@@ -29,39 +29,23 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-          - name: PORT
-            value: {{ .Values.appConfig.port | quote }}
-          - name: MONGO_HOST
-            value: {{ .Values.appConfig.mongoHost | quote }}
-          - name: MONGO_PORT
-            value: {{ .Values.appConfig.mongoPort | quote }}
-          - name: MONGO_USER
-            value: {{ .Values.appConfig.mongoUser | quote }}
-          - name: MONGO_PASS
-            value: {{ .Values.appConfig.mongoPass | quote }}
-          - name: AUTH_ENABLED
-            value: {{ .Values.appConfig.authEnabled | quote }}
-          - name: EGO_API
-            value: {{ .Values.appConfig.egoApi | quote }}
-          - name: SCOPE
-            value: {{ .Values.appConfig.scope | quote }}
-{{- if .Values.extraEnv }}
-  {{ range $key, $value := .Values.extraEnv }}
-          - name: {{ $key }}
-            value: {{ $value | quote }}
+{{- if .Values.appConfig }}
+  {{ range $key, $value := .Values.appConfig }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
   {{- end }}
 {{- end }}
           ports:
             - name: http
-              containerPort: {{ .Values.appConfig.port }}
+              containerPort: {{ .Values.appConfig.SERVER_PORT }}
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: /swagger-ui.html
               port: http
           readinessProbe:
             httpGet:
-              path: /
+              path: /swagger-ui.html
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
