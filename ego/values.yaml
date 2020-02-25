@@ -6,12 +6,12 @@ replicaCount: 1
 
 image:
   repository: overture/ego
-  tag: latest
+  tag: 3.0.0
   pullPolicy: IfNotPresent
 
 uiImage:
   repository: overture/ego-ui
-  tag: latest
+  tag: release-3.0.1
   pullPolicy: IfNotPresent
 
 nameOverride: ""

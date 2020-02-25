@@ -104,7 +104,7 @@ spec:
 {{ toYaml .Values.resources | indent 12 }}
         - name: {{ .Chart.Name }}-ui
           image: "{{ .Values.uiImage.repository }}:{{ .Values.uiImage.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          imagePullPolicy: {{ .Values.uiImage.pullPolicy }}
           env:
             - name: REACT_APP_API
               value: "https://{{ .Values.appConfig.host }}/api"
