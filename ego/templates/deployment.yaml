@@ -93,7 +93,7 @@ spec:
             - name: REFRESHTOKEN_COOKIEISSECURE
               value: {{ .Values.appConfig.refreshToken.cookieIsSecure }}
             - name: REFRESHTOKEN_DOMAIN
-              value: {{ .Values.appConfig.refreshToken.domain }}
+              value: {{ .Values.appConfig.host }}
 {{- if .Values.extraEnv }}
   {{ range $key, $value := .Values.extraEnv }}
             - name: {{ $key }}

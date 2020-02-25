@@ -71,5 +71,4 @@ appConfig:
   refreshToken:
     durationMs: 43200000
     cookieIsSecure: ""
-    domain: ""
 
