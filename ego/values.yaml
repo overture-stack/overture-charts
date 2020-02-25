@@ -64,3 +64,4 @@ appConfig:
   swaggerBaseUrl:
   # ui configs
   egoClientId: ego
+  apiTokenDurationDays: 30

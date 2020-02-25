@@ -79,6 +79,8 @@ spec:
               value: {{ .Values.appConfig.swaggerHost }}
             - name: SWAGGER_BASEURL
               value: {{ .Values.appConfig.swaggerBaseUrl }}
+            - name: APITOKEN_DURATIONDAYS
+              value: {{ .Values.appConfig.apiTokenDurationDays }}
 {{- if .Values.extraEnv }}
   {{ range $key, $value := .Values.extraEnv }}
             - name: {{ $key }}
