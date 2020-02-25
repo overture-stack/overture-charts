@@ -65,3 +65,6 @@ appConfig:
   # ui configs
   egoClientId: ego
   apiTokenDurationDays: 30
+  jwt:
+    secret: ""
+    durationMs: 10800000

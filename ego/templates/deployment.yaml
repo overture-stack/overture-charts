@@ -81,6 +81,13 @@ spec:
               value: {{ .Values.appConfig.swaggerBaseUrl }}
             - name: APITOKEN_DURATIONDAYS
               value: {{ .Values.appConfig.apiTokenDurationDays }}
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "ego.fullname" . }}
+                  key: jwt-secret
+            - name: JWT_DURATIONMS
+              value: {{ .Values.appConfig.jwt.durationMs }}
 {{- if .Values.extraEnv }}
   {{ range $key, $value := .Values.extraEnv }}
             - name: {{ $key }}
