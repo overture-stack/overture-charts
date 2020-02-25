@@ -79,6 +79,21 @@ spec:
               value: {{ .Values.appConfig.swaggerHost }}
             - name: SWAGGER_BASEURL
               value: {{ .Values.appConfig.swaggerBaseUrl }}
+            - name: APITOKEN_DURATIONDAYS
+              value: {{ .Values.appConfig.apiTokenDurationDays }}
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "ego.fullname" . }}
+                  key: jwt-secret
+            - name: JWT_DURATIONMS
+              value: {{ .Values.appConfig.jwt.durationMs }}
+            - name: REFRESHTOKEN_DURATIONMS
+              value: {{ .Values.appConfig.refreshToken.durationMs }}
+            - name: REFRESHTOKEN_COOKIEISSECURE
+              value: {{ .Values.appConfig.refreshToken.cookieIsSecure }}
+            - name: REFRESHTOKEN_DOMAIN
+              value: {{ .Values.appConfig.host }}
 {{- if .Values.extraEnv }}
   {{ range $key, $value := .Values.extraEnv }}
             - name: {{ $key }}
@@ -104,7 +119,7 @@ spec:
 {{ toYaml .Values.resources | indent 12 }}
         - name: {{ .Chart.Name }}-ui
           image: "{{ .Values.uiImage.repository }}:{{ .Values.uiImage.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          imagePullPolicy: {{ .Values.uiImage.pullPolicy }}
           env:
             - name: REACT_APP_API
               value: "https://{{ .Values.appConfig.host }}/api"
