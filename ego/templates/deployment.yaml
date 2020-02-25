@@ -80,13 +80,13 @@ spec:
             - name: SWAGGER_BASEURL
               value: {{ .Values.appConfig.swaggerBaseUrl }}
             - name: APITOKEN_DURATIONDAYS
-              value: {{ .Values.appConfig.apiTokenDurationDays }}
+              value: {{ .Values.appConfig.apiTokenDurationDays | quote }}
             - name: JWT_DURATIONMS
-              value: {{ .Values.appConfig.jwt.durationMs }}
+              value: {{ .Values.appConfig.jwt.durationMs | quote }}
             - name: REFRESHTOKEN_DURATIONMS
-              value: {{ .Values.appConfig.refreshToken.durationMs }}
+              value: {{ .Values.appConfig.refreshToken.durationMs | quote }}
             - name: REFRESHTOKEN_COOKIEISSECURE
-              value: {{ .Values.appConfig.refreshToken.cookieIsSecure }}
+              value: {{ .Values.appConfig.refreshToken.cookieIsSecure | quote }}
             - name: REFRESHTOKEN_DOMAIN
               value: {{ .Values.appConfig.host }}
 {{- if .Values.extraEnv }}
