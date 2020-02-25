@@ -88,6 +88,12 @@ spec:
                   key: jwt-secret
             - name: JWT_DURATIONMS
               value: {{ .Values.appConfig.jwt.durationMs }}
+            - name: REFRESHTOKEN_DURATIONMS
+              value: {{ .Values.appConfig.refreshToken.durationMs }}
+            - name: REFRESHTOKEN_COOKIEISSECURE
+              value: {{ .Values.appConfig.refreshToken.cookieIsSecure }}
+            - name: REFRESHTOKEN_DOMAIN
+              value: {{ .Values.appConfig.refreshToken.domain }}
 {{- if .Values.extraEnv }}
   {{ range $key, $value := .Values.extraEnv }}
             - name: {{ $key }}

@@ -68,3 +68,8 @@ appConfig:
   jwt:
     secret: ""
     durationMs: 10800000
+  refreshToken:
+    durationMs: 43200000
+    cookieIsSecure: ""
+    domain: ""
+
