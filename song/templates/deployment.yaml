@@ -32,7 +32,7 @@ spec:
             - name: BACKUP_PREFIX
               value: "{{ .Values.backup.prefix }}_{{ .Values.image.tag }}"
             - name: BACKUP_AUTOCREATEBUCKET
-              value: {{ .Values.backup.autocreatebucket | quote }}
+              value: {{ .Values.backup.autoCreateBucket | quote }}
             - name: BACKUP_PGDUMPEXEPATH
               value: "/usr/bin/pg_dump"
             - name: S3_ACCESSKEY

@@ -11,7 +11,7 @@ image:
 
 backupImage:
   repository: rtisma1/postgres2s3
-  tag: 1.0.0
+  tag: 1.0.1
   pullPolicy: IfNotPresent
 
 nameOverride: ""
@@ -81,9 +81,9 @@ backup:
   # https://docs.oracle.com/cd/E12058_01/doc/doc.1014/e12030/cron_expressions.htm
   schedule: "* */10 * * * *"
   prefix: backup
-  autocreatebucket: true
+  autoCreateBucket: true
   s3:
     accessKey: someS3AcccesKey
     secretKey: someS3SecretKey
     bucketName:  song-backups
-    endpointURL: "https://object.local:9080"
+    endpointUrl: "https://object.local:9080"
