@@ -48,6 +48,8 @@ spec:
                   key: s3-secretKey
             - name: S3_BUCKETNAME
               value: {{ .Values.backup.s3.bucketName }}
+            - name: S3_BUCKETPATH
+              value: {{ .Values.backup.s3.bucketPath }}
             - name: S3_ENDPOINTURL
               value: {{ .Values.backup.s3.endpointUrl }}
             - name: DB_NAME
