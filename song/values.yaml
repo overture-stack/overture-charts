@@ -6,12 +6,12 @@ replicaCount: 1
 
 image:
   repository: overture/song-server
-  tag: 4.0.0
+  tag: 4.1.1
   pullPolicy: IfNotPresent
 
 backupImage:
   repository: rtisma1/postgres2s3
-  tag: 1.0.1
+  tag: 1.0.2
   pullPolicy: IfNotPresent
 
 nameOverride: ""
@@ -74,6 +74,11 @@ postgres:
   postgresUsername: postgres
   postgresPassword: password
   postgresDb: song
+
+podSecurityContext:
+  runAsGroup: 9999
+  runAsNonRoot: true
+  runAsUser: 9999
 
 backup:
   enabled: false
