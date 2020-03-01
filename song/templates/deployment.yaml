@@ -21,7 +21,49 @@ spec:
         release: {{ .Release.Name }}
         component: "server"
     spec:
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
+{{- if .Values.backup.enabled }}
+        - name: {{ template "song.fullname" . }}-backup
+          image: "{{ .Values.backupImage.repository }}:{{ .Values.backupImage.tag }}"
+          imagePullPolicy: {{ .Values.backupImage.pullPolicy }}
+          env:
+            - name: BACKUP_CRONSCHEDULE
+              value: {{ .Values.backup.schedule | quote }}
+            - name: BACKUP_PREFIX
+              value: "{{ .Values.backup.prefix }}_{{ .Values.image.tag }}"
+            - name: BACKUP_AUTOCREATEBUCKET
+              value: {{ .Values.backup.autoCreateBucket | quote }}
+            - name: BACKUP_PGDUMPEXEPATH
+              value: "/usr/bin/pg_dump"
+            - name: S3_ACCESSKEY
+              value: {{ .Values.backup.s3.accessKey }}
+            - name: S3_SECRETKEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "song.fullname" . }}
+                  key: s3-secretKey
+            - name: S3_BUCKETNAME
+              value: {{ .Values.backup.s3.bucketName }}
+            - name: S3_ENDPOINTURL
+              value: {{ .Values.backup.s3.endpointUrl }}
+            - name: DB_NAME
+              value: {{ .Values.postgres.postgresDb }}
+            - name: DB_HOST
+              value: {{ template "song.fullname" . }}-postgres
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_USER
+              value: {{ .Values.postgres.postgresUsername }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "song.fullname" . }}-postgres
+                  key: postgres-password
+{{- end }}
         - name: song-server
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
