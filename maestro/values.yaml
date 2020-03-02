@@ -42,6 +42,6 @@ rbac:
     tokenReview: false
 
 appVolume:
-  mountPath: /app-data
+  mountPath: /app/app-data
 
 containerPort: 80

@@ -33,7 +33,7 @@ spec:
           - name: SERVER_PORT
             value: "{{ .Values.containerPort }}"
           - name: MAESTRO_FAILURELOG_DIR
-            value: {{ .Values.appVolume.mountPath }}/errors/
+            value: {{ .Values.appVolume.mountPath }}
 {{- if .Values.extraEnv }}
   {{ range $key, $value := .Values.extraEnv }}
           - name: {{ $key }}
