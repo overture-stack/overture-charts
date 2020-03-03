@@ -57,3 +57,8 @@ appConfig:
     stateBucket: qa.icgc
     partSize: "1073741824"
     connectionTimeout: "1200000"
+
+podSecurityContext:
+  runAsGroup: 9999
+  runAsNonRoot: true
+  runAsUser: 9999
