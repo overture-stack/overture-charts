@@ -36,6 +36,13 @@ affinity: {}
 # see _examples/provide-env/values.yaml
 extraEnv: {}
 
+extraEnvYaml:
+# - name: ELASTIC_USER
+#   valueFrom:
+#     secretKeyRef:
+#       name: secret-name
+#       key: secret-key
+
 # this is useful to integrate with vault 
 rbac:
   create:
@@ -44,4 +51,4 @@ rbac:
 appVolume:
   mountPath: /app/app-data
 
-containerPort: 80
+containerPort: 11235

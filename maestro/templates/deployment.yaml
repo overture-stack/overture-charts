@@ -19,6 +19,7 @@ spec:
         app.kubernetes.io/name: {{ include "maestro.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      serviceAccountName: {{ include "maestro.name" . }}
       volumes:
         - name: app-data
           emptyDir: {}
@@ -40,6 +41,9 @@ spec:
             value: {{ $value | quote }}
   {{- end }}
 {{- end }}
+      {{- with .Values.extraEnvYaml }}
+        {{- toYaml . | nindent 10 }}
+      {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.containerPort }}
