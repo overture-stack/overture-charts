@@ -16,6 +16,9 @@ spec:
         app.kubernetes.io/name: {{ include "rollcall.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+    {{- if .Values.serviceAccountName }}
+      serviceAccountName: {{ .Values.serviceAccountName }}
+    {{- end }}
     {{- with .Values.podSecurityContext }}
       securityContext:
       {{- toYaml . | nindent 8 }}
