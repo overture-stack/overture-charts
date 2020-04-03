@@ -64,10 +64,14 @@ spec:
             value: {{ .Values.appConfig.authServer.clientId }}
           - name: AUTH_SERVER_CLIENTSECRET
             value: {{ .Values.appConfig.authServer.clientSecret }}
-          - name: AUTH_SERVER_UPLOADSCOPE
-            value: {{ .Values.appConfig.authServer.downloadScope }}
-          - name: AUTH_SERVER_DOWNLOADSCOPE
-            value: {{ .Values.appConfig.authServer.uploadScope }}
+          - name: AUTH_SERVER_SCOPE_SYSTEM
+            value: {{ .Values.appConfig.authServer.scope.system }}
+          - name: AUTH_SERVER_SCOPE_STUDY_PREFIX
+            value: {{ .Values.appConfig.authServer.scope.study.prefix }}
+          - name: AUTH_SERVER_SCOPE_DOWNLOAD_SUFFIX
+            value: {{ .Values.appConfig.authServer.scope.download.suffix }}
+          - name: AUTH_SERVER_SCOPE_UPLOAD_SUFFIX
+            value: {{ .Values.appConfig.authServer.scope.upload.suffix }}
 {{- if .Values.extraEnv }}
   {{ range $key, $value := .Values.extraEnv }}
           - name: {{ $key }}
