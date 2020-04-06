@@ -40,8 +40,14 @@ appConfig:
     clientSecret: 
     url: https://ego.local/api/o/check_token
     tokenName: token
-    uploadScope: scoreqa.WRITE
-    downloadScope: scoreqa.READ
+    scope: 
+      system: "" 
+      study:
+        prefix: ""
+      download:
+        suffix: ""
+      upload:
+        suffix: ""
   objectStorage:
     accessKey: 
     secretKey: 
