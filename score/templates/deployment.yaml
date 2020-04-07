@@ -53,7 +53,10 @@ spec:
           - name: S3_ACCESSKEY
             value: {{ .Values.appConfig.objectStorage.accessKey }}
           - name: S3_SECRETKEY
-            value: {{ .Values.appConfig.objectStorage.secretKey }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "score.fullname" . }}
+                key: s3-secretKey
           - name: S3_SIGV4ENABLED
             value: {{ .Values.appConfig.objectStorage.sigV4Enabled | quote }}
           - name: AUTH_SERVER_URL
@@ -63,7 +66,10 @@ spec:
           - name: AUTH_SERVER_CLIENTID
             value: {{ .Values.appConfig.authServer.clientId }}
           - name: AUTH_SERVER_CLIENTSECRET
-            value: {{ .Values.appConfig.authServer.clientSecret }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "score.fullname" . }}
+                key: auth-clientSecret
           - name: AUTH_SERVER_SCOPE_SYSTEM
             value: {{ .Values.appConfig.authServer.scope.system }}
           - name: AUTH_SERVER_SCOPE_STUDY_PREFIX
