@@ -40,14 +40,17 @@ appConfig:
     clientSecret: 
     url: https://ego.local/api/o/check_token
     tokenName: token
-    scope: 
-      system: "" 
-      study:
-        prefix: ""
+    scope:
       download:
-        suffix: ""
+        system: aws.download
+        study:
+          prefix: aws.
+          suffix: .download
       upload:
-        suffix: ""
+        system: aws.upload
+        study:
+          prefix: aws.
+          suffix: .upload
   objectStorage:
     accessKey: 
     secretKey: 

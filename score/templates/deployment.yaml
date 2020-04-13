@@ -70,14 +70,18 @@ spec:
               secretKeyRef:
                 name: {{ template "score.fullname" . }}
                 key: auth-clientSecret
-          - name: AUTH_SERVER_SCOPE_SYSTEM
-            value: {{ .Values.appConfig.authServer.scope.system }}
-          - name: AUTH_SERVER_SCOPE_STUDY_PREFIX
-            value: {{ .Values.appConfig.authServer.scope.study.prefix }}
-          - name: AUTH_SERVER_SCOPE_DOWNLOAD_SUFFIX
-            value: {{ .Values.appConfig.authServer.scope.download.suffix }}
-          - name: AUTH_SERVER_SCOPE_UPLOAD_SUFFIX
-            value: {{ .Values.appConfig.authServer.scope.upload.suffix }}
+          - name: AUTH_SERVER_SCOPE_DOWNLOAD_SYSTEM
+            value: {{ .Values.appConfig.authServer.scope.download.system }}
+          - name: AUTH_SERVER_SCOPE_DOWNLOAD_STUDY_PREFIX
+            value: {{ .Values.appConfig.authServer.scope.download.study.prefix }}
+          - name: AUTH_SERVER_SCOPE_DOWNLOAD_STUDY_SUFFIX
+            value: {{ .Values.appConfig.authServer.scope.download.study.suffix }}
+          - name: AUTH_SERVER_SCOPE_UPLOAD_SYSTEM
+            value: {{ .Values.appConfig.authServer.scope.upload.system }}
+          - name: AUTH_SERVER_SCOPE_UPLOAD_STUDY_PREFIX
+            value: {{ .Values.appConfig.authServer.scope.upload.study.prefix }}
+          - name: AUTH_SERVER_SCOPE_UPLOAD_STUDY_SUFFIX
+            value: {{ .Values.appConfig.authServer.scope.upload.study.suffix }}
 {{- if .Values.extraEnv }}
   {{ range $key, $value := .Values.extraEnv }}
           - name: {{ $key }}
