@@ -67,8 +67,8 @@ appConfig:
   apiTokenDurationDays: 30
   jwt:
     secret: ""
-    durationMs: 10800000
+    durationMs: "10800000"
   refreshToken:
-    durationMs: 43200000
+    durationMs: "43200000"
     cookieIsSecure: ""
 
