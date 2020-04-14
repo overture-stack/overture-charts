@@ -22,12 +22,12 @@ service:
   port: 80
 
 ingressApi:
-  enabled: true
+  enabled: false
   host: ego.local
   tls: []
 
 ingressUi:
-  enabled: true
+  enabled: false
   host: api.ego.local
   tls: []
 
