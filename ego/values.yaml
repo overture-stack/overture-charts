@@ -21,10 +21,14 @@ service:
   type: ClusterIP
   port: 80
 
-ingress:
-  enabled: false
-  annotations: {}
+ingressApi:
+  enabled: true
   host: ego.local
+  tls: []
+
+ingressUi:
+  enabled: true
+  host: api.ego.local
   tls: []
 
 resources: {}
@@ -51,7 +55,7 @@ postgres:
 appConfig:
   # api configs
   activeProfiles: auth,grpc
-  host: ego.local
+  host: api.ego.local
   googleClientID: ""
   googleClientSecret: ""
   linkedInClientID: ""
