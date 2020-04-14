@@ -23,12 +23,12 @@ service:
 
 ingressApi:
   enabled: false
-  host: ego.local
+  host: api.ego.local
   tls: []
 
 ingressUi:
   enabled: false
-  host: api.ego.local
+  host: ego.local
   tls: []
 
 resources: {}
