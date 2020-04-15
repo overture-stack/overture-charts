@@ -23,12 +23,12 @@ service:
 
 ingressApi:
   enabled: false
-  host: api.ego.local
+  host: ego.local
   tls: []
 
 ingressUi:
   enabled: false
-  host: ego.local
+  host: ui.ego.local
   tls: []
 
 resources: {}
@@ -55,7 +55,7 @@ postgres:
 appConfig:
   # api configs
   activeProfiles: auth,grpc
-  host: api.ego.local
+  host: ego.local
   googleClientID: ""
   googleClientSecret: ""
   linkedInClientID: ""
