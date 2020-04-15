@@ -27,7 +27,7 @@ spec:
       {{- end }}
       containers:
 {{- if .Values.backup.enabled }}
-        - name: {{ template "song.fullname" . }}-backup
+        - name: song-db-backup
           image: "{{ .Values.backupImage.repository }}:{{ .Values.backupImage.tag }}"
           imagePullPolicy: {{ .Values.backupImage.pullPolicy }}
           env:
