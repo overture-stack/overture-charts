@@ -3,23 +3,21 @@ kind: Deployment
 metadata:
   name: {{ include "song.server.fullname" . }}
   labels:
-    app: {{ include "song.name" . }}
-    chart: {{ include "song.chart" . }}
-    component: "server"
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  {{ include "song.labels" . | indent 4 }}
+  {{- if .Values.extraLabels }}
+  {{ include ".Values.extraLabels" . | indent 4 }}
+  {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "song.name" . }}
-      release: {{ .Release.Name }}
+      app.kubernetes.io/name: {{ include "song.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ include "song.name" . }}
-        release: {{ .Release.Name }}
-        component: "server"
+        app.kubernetes.io/name: {{ include "song.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       {{- with .Values.podSecurityContext }}
       securityContext:

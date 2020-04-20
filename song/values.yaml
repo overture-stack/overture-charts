@@ -40,6 +40,11 @@ volumeSize: 20Gi
 
 extraEnv: {}
 
+# Uncomment to add extra labels
+# extraLabels:
+#   label1Name: label1Value
+#   label2Name: label2Value
+
 appConfig:
   profiles: "prod,secure,default"
   id:

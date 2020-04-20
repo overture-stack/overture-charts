@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: {{ include "song.server.fullname" . }}
   labels:
-    app: {{ include "song.name" . }}
-    chart: {{ include "song.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  {{ include "song.labels" . | indent 4 }}
+  {{- if .Values.extraLabels }}
+  {{ include ".Values.extraLabels" . | indent 4 }}
+  {{- end }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -15,6 +15,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: {{ include "song.name" . }}
-    component: "server"
-    release: {{ .Release.Name }}
+    app.kubernetes.io/name: {{ include "song.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
