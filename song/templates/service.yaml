@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: {{ include "song.server.fullname" . }}
   labels:
-  {{ include "song.labels" . | indent 4 }}
-  {{- if .Values.extraLabels }}
-  {{ include ".Values.extraLabels" . | indent 4 }}
-  {{- end }}
+{{ include "song.labels" . | indent 4 }}
+{{- if .Values.extraLabels }}
+{{ include ".Values.extraLabels" . | indent 4 }}
+{{- end }}
 spec:
   type: {{ .Values.service.type }}
   ports:
