@@ -21,10 +21,14 @@ service:
   type: ClusterIP
   port: 80
 
-ingress:
+ingressApi:
   enabled: false
-  annotations: {}
   host: ego.local
+  tls: []
+
+ingressUi:
+  enabled: false
+  host: ui.ego.local
   tls: []
 
 resources: {}
