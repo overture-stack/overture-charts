@@ -16,6 +16,7 @@ spec:
         app.kubernetes.io/name: {{ include "lectern.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      serviceAccountName: {{ include "lectern.fullname" . }}
     {{- with .Values.podSecurityContext }}
       securityContext:
       {{- toYaml . | nindent 8 }}
