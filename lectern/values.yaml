@@ -65,3 +65,9 @@ podSecurityContext:
   runAsGroup: 9999
   runAsNonRoot: true
   runAsUser: 9999
+
+# choose rbac roles to enable
+rbac:
+  create:
+    # for vault kubernetes integration
+    tokenReview: true
