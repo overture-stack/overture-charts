@@ -71,7 +71,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: SPRING_PROFILES_ACTIVE
-              value: {{ template "song.activeSpringProfiles" }}
+              value: {{ template "song.activeSpringProfiles" . }}
             - name: AUTH_SERVER_URL
               value: {{ .Values.appConfig.auth.server.url }}
             - name: AUTH_SERVER_TOKENNAME
@@ -121,12 +121,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ template "song.fullname" . }}-postgres
-{{ -if .Values.appConfig.auth.jwt.enabled }}
+                  key: postgres-password
+{{- if .Values.appConfig.auth.jwt.enable }}
             - name: AUTH_JWT_PUBLICKEYURL
               value: {{ .Values.appConfig.auth.jwt.publicKeyUrl }}
 {{- end }}
 
-                  key: postgres-password
 {{- if .Values.extraEnv }}
   {{ range $key, $value := .Values.extraEnv }}
             - name: {{ $key }}
