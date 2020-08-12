@@ -66,6 +66,10 @@ appConfig:
       tokenName: token
       clientID: metadata
       clientSecret: test
+    jwt:
+      enable: false
+      publicKeyUrl: https://auth.local/oauth/public_key
+
   score:
     url: https://storage.local
     accessToken: "321"

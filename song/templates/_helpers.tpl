@@ -56,3 +56,17 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- printf "%s-%s-%s" .Release.Name $name "postgres" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 {{- end -}}
+
+
+{{/*
+Resolve the correct spring profile to run
+*/}}
+{{- define "song.activeSpringProfiles" -}}
+{{- if .Values.appConfig.auth.jwt.enable -}}
+{{- printf "%s,jwt" .Values.appConfig.profiles -}}
+{{- else -}}
+{{- printf "%s" .Values.appConfig.profiles -}}
+{{- end -}}
+{{- end -}}
+
+
