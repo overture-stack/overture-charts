@@ -30,3 +30,14 @@ Create chart name and version as used by the chart label.
 {{- define "score.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{/*
+Resolve the correct spring profile to run
+*/}}
+{{- define "score.activeSpringProfiles" -}}
+{{- if .Values.appConfig.auth.jwt.enable -}}
+{{- printf "%s,jwt" .Values.appConfig.springProfiles -}}
+{{- else -}}
+{{- printf "%s" .Values.appConfig.springProfiles -}}
+{{- end -}}
+{{- end -}}

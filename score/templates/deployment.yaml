@@ -31,7 +31,7 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
           - name: SPRING_PROFILES_ACTIVE
-            value: {{ .Values.appConfig.springProfiles }}
+            value: {{ template "score.activeSpringProfiles" . }}
           - name: SERVER_PORT
             value: {{ quote .Values.appConfig.storageServer.port }}
           - name: OBJECT_SENTINEL
@@ -82,6 +82,10 @@ spec:
             value: {{ .Values.appConfig.authServer.scope.upload.study.prefix }}
           - name: AUTH_SERVER_SCOPE_UPLOAD_STUDY_SUFFIX
             value: {{ .Values.appConfig.authServer.scope.upload.study.suffix }}
+{{- if .Values.appConfig.authServer.jwt.enable }}
+          - name: AUTH_JWT_PUBLICKEYURL
+            value: {{ .Values.appConfig.authServer.jwt.publicKeyUrl }}
+{{- end }}
 {{- if .Values.extraEnv }}
   {{ range $key, $value := .Values.extraEnv }}
           - name: {{ $key }}
