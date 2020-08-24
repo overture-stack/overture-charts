@@ -35,7 +35,7 @@ Create chart name and version as used by the chart label.
 Resolve the correct spring profile to run
 */}}
 {{- define "score.activeSpringProfiles" -}}
-{{- if .Values.appConfig.auth.jwt.enable -}}
+{{- if .Values.appConfig.authServer.jwt.enable -}}
 {{- printf "%s,jwt" .Values.appConfig.springProfiles -}}
 {{- else -}}
 {{- printf "%s" .Values.appConfig.springProfiles -}}
