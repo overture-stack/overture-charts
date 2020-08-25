@@ -51,6 +51,9 @@ appConfig:
         study:
           prefix: aws.
           suffix: .upload
+    jwt:
+      enable: false
+      publicKeyUrl: https://auth.local/oauth/public_key
   objectStorage:
     accessKey: 
     secretKey: 
