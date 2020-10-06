@@ -64,6 +64,8 @@ appConfig:
   githubClientSecret: ""
   facebookClientID: ""
   facebookClientSecret: ""
+  orcidClientID: ""
+  orcidClientSecret: ""
   swaggerHost:
   swaggerBaseUrl:
   # ui configs
@@ -75,4 +77,3 @@ appConfig:
   refreshToken:
     durationMs: "43200000"
     cookieIsSecure: ""
-
