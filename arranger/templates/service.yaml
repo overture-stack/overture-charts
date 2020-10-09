@@ -7,9 +7,14 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: {{ .Values.service.port }}
+    - port: {{ .Values.service.apiPort }}
+      targetPort: {{ .Chart.Name }}-api
       protocol: TCP
-      name: {{ .Chart.Name }}-server
+      name: {{ .Chart.Name }}-api
+
+    - port: {{ .Values.service.uiPort }}
+      targetPort: {{ .Chart.Name }}-ui
+      protocol: TCP
+      name: {{ .Chart.Name }}-ui
   selector:
     {{- include "arranger.selectorLabels" . | nindent 4 }}

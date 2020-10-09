@@ -28,20 +28,46 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ .Chart.Name }}-api
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ .Values.apiImage.repository }}:{{ .Values.apiImage.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.apiImage.pullPolicy }}
           ports:
-            - name: {{ .Chart.Name }}-server
-              containerPort: {{ .Values.service.port }}
+            - name: {{ .Chart.Name }}-api
+              containerPort: {{ .Values.apiConfig.port }}
               protocol: TCP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
             - name: ES_HOST
-              value: {{ .Values.es.host }}
+              value: {{ .Values.apiConfig.es.host }}
+{{- if .Values.apiConfig.es.username }}
+            - name: ES_USER
+              value: {{ .Values.apiConfig.es.username }}
+            - name: ES_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.apiConfig.es.password.secretName }}
+                  key: {{ .Values.apiConfig.es.username }}
+{{- end }}
+
+{{- if .Values.uiConfig.enabled }}
+        - name: {{ .Chart.Name }}-ui
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.uiImage.repository }}:{{ .Values.uiImage.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.uiImage.pullPolicy }}
+          ports:
+            - name: {{ .Chart.Name }}-ui
+              containerPort: {{ .Values.uiConfig.port }}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: REACT_APP_ARRANGER_ADMIN_ROOT
+              value: {{ .Values.uiConfig.serverUrl }}/admin/graphql
+{{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

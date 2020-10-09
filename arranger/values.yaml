@@ -4,12 +4,6 @@
 
 replicaCount: 1
 
-image:
-  repository: overture/arranger-server
-  pullPolicy: Always
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: "2.4.0"
-
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -40,14 +34,8 @@ securityContext:
 
 service:
   type: ClusterIP
-  port: 80
-
-ingress:
-  enabled: false
-  annotations: {}
-  hosts:
-    - arranger.local
-  tls: []
+  apiPort: 80
+  uiPort: 81
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -73,7 +61,48 @@ autoscaling:
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
-  #
-es:
-  host: "http://localhost:9200"
-  port: "5050"
+
+##############################
+#  API Values
+##############################
+apiImage:
+  repository: overture/arranger-server
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "2.4.0"
+
+apiConfig:
+  host: https://arranger-api.local
+  port: 5050
+  es:
+    host: "http://elasticsearch:9200"
+    username: ""  #If empty or not defined, ES configured without auth
+    password:
+      secretName: ""
+
+apiIngress:
+  enabled: false
+  annotations: {}
+  host: arranger-api.local
+  tls: []
+
+##############################
+#  UI Values
+##############################
+uiImage:
+  repository: overture/arranger-ui
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "2.4.0"
+
+uiConfig:
+  enabled: false
+  serverUrl: https://arranger-api.local/api
+  port: 8080
+
+uiIngress:
+  enabled: false
+  annotations: {}
+  host: arranger-ui.local
+  tls: []
+
