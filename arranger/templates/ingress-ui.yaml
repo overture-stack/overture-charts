@@ -1,4 +1,4 @@
-{{- if .Values.uiIngress.enabled -}}
+{{- if and .Values.uiIngress.enabled .Values.uiConfig.enabled -}}
 {{- $fullName := include "arranger.fullname" . -}}
 {{- $svcPort := .Values.service.uiPort -}}
 {{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
