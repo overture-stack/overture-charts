@@ -28,7 +28,7 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}-api
+        - name: api
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.apiImage.repository }}:{{ .Values.apiImage.tag | default .Chart.AppVersion }}"
@@ -53,7 +53,7 @@ spec:
 {{- end }}
 
 {{- if .Values.uiConfig.enabled }}
-        - name: {{ .Chart.Name }}-ui
+        - name: ui
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.uiImage.repository }}:{{ .Values.uiImage.tag | default .Chart.AppVersion }}"
@@ -69,6 +69,22 @@ spec:
               value: {{ .Values.uiConfig.port | quote }}
             - name: REACT_APP_ARRANGER_ADMIN_ROOT
               value: {{ .Values.uiConfig.serverUrl }}/admin/graphql
+            - name: NGINX_CONF_PATH
+              value: /custom-nginx/nginx.conf
+          volumeMounts:
+          - name: nginx-conf
+            mountPath: /custom-nginx
+          - name: nginx-cache
+            mountPath: /var/cache/nginx
+          - name: nginx-run
+            mountPath: /var/run
+      volumes:
+        - name: nginx-conf
+          emptyDir: {}
+        - name: nginx-cache
+          emptyDir: {}
+        - name: nginx-run
+          emptyDir: {}
 {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
