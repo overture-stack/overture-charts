@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "arranger.fullname" . }}
+  labels:
+    {{- include "arranger.labels" . | nindent 4 }}
+spec:
+{{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "arranger.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "arranger.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "arranger.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: api
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.apiImage.repository }}:{{ .Values.apiImage.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.apiImage.pullPolicy }}
+          ports:
+            - name: {{ .Chart.Name }}-api
+              containerPort: {{ .Values.apiConfig.port }}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: ES_HOST
+              value: {{ .Values.apiConfig.es.host }}
+{{- if .Values.apiConfig.es.username }}
+            - name: ES_USER
+              value: {{ .Values.apiConfig.es.username }}
+            - name: ES_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.apiConfig.es.password.secretName }}
+                  key: {{ .Values.apiConfig.es.username }}
+{{- end }}
+
+{{- if .Values.uiConfig.enabled }}
+        - name: ui
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.uiImage.repository }}:{{ .Values.uiImage.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.uiImage.pullPolicy }}
+          ports:
+            - name: {{ .Chart.Name }}-ui
+              containerPort: {{ .Values.uiConfig.port }}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: PORT
+              value: {{ .Values.uiConfig.port | quote }}
+            - name: REACT_APP_ARRANGER_ADMIN_ROOT
+              value: {{ .Values.uiConfig.serverUrl }}/admin/graphql
+            - name: NGINX_CONF_PATH
+              value: /custom-nginx/nginx.conf
+          volumeMounts:
+          - name: nginx-conf
+            mountPath: /custom-nginx
+          - name: nginx-cache
+            mountPath: /var/cache/nginx
+          - name: nginx-run
+            mountPath: /var/run
+      volumes:
+        - name: nginx-conf
+          emptyDir: {}
+        - name: nginx-cache
+          emptyDir: {}
+        - name: nginx-run
+          emptyDir: {}
+{{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

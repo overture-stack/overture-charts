@@ -1,0 +1,108 @@
+# Default values for arranger.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  runAsGroup: 9999
+  runAsNonRoot: true
+  runAsUser: 9999
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+
+service:
+  type: ClusterIP
+  apiPort: 80
+  uiPort: 81
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+##############################
+#  API Values
+##############################
+apiImage:
+  repository: overture/arranger-server
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "2.4.0"
+
+apiConfig:
+  host: https://arranger-api.local
+  port: 5050
+  es:
+    host: "http://elasticsearch:9200"
+    username: ""  #If empty or not defined, ES configured without auth
+    password:
+      secretName: ""
+
+apiIngress:
+  enabled: false
+  annotations: {}
+  host: arranger-api.local
+  tls: []
+
+##############################
+#  UI Values
+##############################
+uiImage:
+  repository: overture/arranger-ui
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "2.4.0"
+
+uiConfig:
+  enabled: false
+  serverUrl: https://arranger-api.local/api
+  port: 8080
+
+uiIngress:
+  enabled: false
+  annotations: {}
+  host: arranger-ui.local
+  tls: []
+
