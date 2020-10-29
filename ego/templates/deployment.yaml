@@ -38,6 +38,15 @@ spec:
                   key: google-client-secret
             - name: GOOGLE_CLIENT_PREESTABLISHEDREDIRECTURI
               value: "https://{{ .Values.appConfig.host }}/api/oauth/login/google"
+            - name: ORCID_CLIENT_CLIENTID
+              value: {{ .Values.appConfig.orcidClientID }}
+            - name: ORCID_CLIENT_CLIENTSECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "ego.fullname" . }}
+                  key: orcid-client-secret
+            - name: ORCID_CLIENT_PREESTABLISHEDREDIRECTURI
+              value: "https://{{ .Values.appConfig.host }}/api/oauth/login/orcid"
             - name: LINKEDIN_CLIENT_CLIENTID
               value: {{ .Values.appConfig.linkedInClientID }}
             - name: LINKEDIN_CLIENT_CLIENTSECRET
