@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: overture/ego
-  tag: 3.0.0
+  tag: 3.5.0
   pullPolicy: IfNotPresent
 
 uiImage:
