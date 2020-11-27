@@ -41,7 +41,7 @@ volumeSize: 20Gi
 extraEnv: {}
 
 appConfig:
-  profiles: "prod,secure,default"
+  profiles: "prod,secure,default,jwt,score-client-creds"
   id:
     useLocal: true
     federated:
@@ -67,12 +67,10 @@ appConfig:
       clientID: metadata
       clientSecret: test
     jwt:
-      enable: false
       publicKeyUrl: https://auth.local/oauth/public_key
 
   score:
     url: https://storage.local
-    useAccessToken: true
     accessToken: "321"
     clientCredentials:
       id: oauth
