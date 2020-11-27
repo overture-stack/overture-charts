@@ -71,11 +71,11 @@ appConfig:
       publicKeyUrl: https://auth.local/oauth/public_key
     score:
       url: https://storage.local
-    clientCredentials:
-      id: oauth
-      secret: oauthsecret
-      tokenUrl: https://auth.local/oauth/token
-      systemScope: score.WRITE
+      clientCredentials:
+        id: oauth
+        secret: oauthsecret
+        tokenUrl: https://auth.local/oauth/token
+        systemScope: score.WRITE
 
   score:
     url: https://storage.local
