@@ -72,6 +72,7 @@ appConfig:
 
   score:
     url: https://storage.local
+    useAccessToken: true
     accessToken: "321"
     clientCredentials:
       id: oauth
