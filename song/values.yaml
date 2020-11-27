@@ -69,17 +69,15 @@ appConfig:
     jwt:
       enable: false
       publicKeyUrl: https://auth.local/oauth/public_key
-    score:
-      url: https://storage.local
-      clientCredentials:
-        id: oauth
-        secret: oauthsecret
-        tokenUrl: https://auth.local/oauth/token
-        systemScope: score.WRITE
 
   score:
     url: https://storage.local
     accessToken: "321"
+    clientCredentials:
+      id: oauth
+      secret: oauthsecret
+      tokenUrl: https://auth.local/oauth/token
+      systemScope: score.WRITE
 
 postgres:
   postgresUsername: postgres
