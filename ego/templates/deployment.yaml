@@ -90,8 +90,10 @@ spec:
               value: {{ .Values.appConfig.swaggerBaseUrl }}
             - name: APITOKEN_DURATIONDAYS
               value: {{ .Values.appConfig.apiTokenDurationDays | quote }}
-            - name: JWT_DURATIONMS
-              value: {{ .Values.appConfig.jwt.durationMs | quote }}
+            - name: JWT_USER_DURATIONMS
+              value: {{ .Values.appConfig.jwt.userDurationMs | quote }}
+            - name: JWT_APP_DURATIONMS
+              value: {{ .Values.appConfig.jwt.appDurationMs | quote }}
             - name: REFRESHTOKEN_DURATIONMS
               value: {{ .Values.appConfig.refreshToken.durationMs | quote }}
             - name: REFRESHTOKEN_COOKIEISSECURE
