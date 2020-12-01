@@ -109,12 +109,12 @@ spec:
                 secretKeyRef:
                   name: {{ template "song.fullname" . }}
                   key: score-accessToken
-            - name: SCORE_CLIENTCREDENTIALS_ID
+            - name: SCORE_CLIENTCREDENTIALS_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ template "song.fullname" . }}
                   key: score-clientCredentials-secret
-            - name: SCORE_CLIENTCREDENTIALS_SECRET
+            - name: SCORE_CLIENTCREDENTIALS_ID
               value: {{.Values.appConfig.score.clientCredentials.id }}
             - name: SCORE_CLIENTCREDENTIALS_TOKENURL
               value: {{.Values.appConfig.score.clientCredentials.tokenUrl }}
