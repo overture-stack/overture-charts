@@ -71,7 +71,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: SPRING_PROFILES_ACTIVE
-              value: {{ template "song.activeSpringProfiles" . }}
+              value: {{ .Values.appConfig.profiles }}
             - name: AUTH_SERVER_URL
               value: {{ .Values.appConfig.auth.server.url }}
             - name: AUTH_SERVER_TOKENNAME
@@ -109,6 +109,17 @@ spec:
                 secretKeyRef:
                   name: {{ template "song.fullname" . }}
                   key: score-accessToken
+            - name: SCORE_CLIENTCREDENTIALS_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "song.fullname" . }}
+                  key: score-clientCredentials-secret
+            - name: SCORE_CLIENTCREDENTIALS_SECRET
+              value: {{.Values.appConfig.score.clientCredentials.id }}
+            - name: SCORE_CLIENTCREDENTIALS_TOKENURL
+              value: {{.Values.appConfig.score.clientCredentials.tokenUrl }}
+            - name: SCORE_CLIENTCREDENTIALS_SYSTEMSCOPE
+              value: {{.Values.appConfig.score.clientCredentials.systemScope }}
             - name: SPRING_FLYWAY_ENABLED
               value: {{ .Values.appConfig.flyway.enabled | quote }}
             - name: SPRING_FLYWAY_LOCATIONS

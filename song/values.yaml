@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: overture/song-server
-  tag: 4.1.1
+  tag: 4.4.0
   pullPolicy: IfNotPresent
 
 backupImage:
@@ -41,7 +41,7 @@ volumeSize: 20Gi
 extraEnv: {}
 
 appConfig:
-  profiles: "prod,secure,default"
+  profiles: "prod,secure,default,jwt,score-client-creds"
   id:
     useLocal: true
     federated:
@@ -49,9 +49,9 @@ appConfig:
         bearer:
           token: "someToken"
       uriTemplate:
-        donor:    https://id.example.org/donor/id?submittedProjectId={studyId}&submittedDonorId={submitterId}&create=true
+        donor: https://id.example.org/donor/id?submittedProjectId={studyId}&submittedDonorId={submitterId}&create=true
         specimen: https://id.example.org/specimen/id?submittedProjectId={studyId}&submittedSpecimenId={submitterId}&create=true
-        sample:   https://id.example.org/sample/id?submittedProjectId={studyId}&submittedSampleId={submitterId}&create=true
+        sample: https://id.example.org/sample/id?submittedProjectId={studyId}&submittedSampleId={submitterId}&create=true
   flyway:
     enabled: true
     locations: classpath:flyway/sql,classpath:db/migration
@@ -67,12 +67,16 @@ appConfig:
       clientID: metadata
       clientSecret: test
     jwt:
-      enable: false
       publicKeyUrl: https://auth.local/oauth/public_key
 
   score:
     url: https://storage.local
     accessToken: "321"
+    clientCredentials:
+      id: oauth
+      secret: oauthsecret
+      tokenUrl: https://auth.local/oauth/token
+      systemScope: score.WRITE
 
 postgres:
   postgresUsername: postgres
@@ -94,6 +98,6 @@ backup:
   s3:
     accessKey: someS3AcccesKey
     secretKey: someS3SecretKey
-    bucketName:  postgres-backups
-    bucketPath:  some-namespace/song
+    bucketName: postgres-backups
+    bucketPath: some-namespace/song
     endpointUrl: "https://object.local:9080"
