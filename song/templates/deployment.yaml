@@ -115,11 +115,11 @@ spec:
                   name: {{ template "song.fullname" . }}
                   key: score-clientCredentials-secret
             - name: SCORE_CLIENTCREDENTIALS_ID
-              value: {{.Values.appConfig.score.clientCredentials.id }}
+              value: {{ .Values.appConfig.score.clientCredentials.id }}
             - name: SCORE_CLIENTCREDENTIALS_TOKENURL
-              value: {{.Values.appConfig.score.clientCredentials.tokenUrl }}
+              value: {{ .Values.appConfig.score.clientCredentials.tokenUrl }}
             - name: SCORE_CLIENTCREDENTIALS_SYSTEMSCOPE
-              value: {{.Values.appConfig.score.clientCredentials.systemScope }}
+              value: {{ .Values.appConfig.score.clientCredentials.systemScope }}
             - name: SPRING_FLYWAY_ENABLED
               value: {{ .Values.appConfig.flyway.enabled | quote }}
             - name: SPRING_FLYWAY_LOCATIONS
