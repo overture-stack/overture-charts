@@ -109,6 +109,7 @@ spec:
                 secretKeyRef:
                   name: {{ template "song.fullname" . }}
                   key: score-accessToken
+            {{- if (contains "score-client-creds" .Values.appConfig.profiles) }}
             - name: SCORE_CLIENTCREDENTIALS_SECRET
               valueFrom:
                 secretKeyRef:
@@ -120,6 +121,7 @@ spec:
               value: {{ .Values.appConfig.score.clientCredentials.tokenUrl }}
             - name: SCORE_CLIENTCREDENTIALS_SYSTEMSCOPE
               value: {{ .Values.appConfig.score.clientCredentials.systemScope }}
+            {{- end }}
             - name: SPRING_FLYWAY_ENABLED
               value: {{ .Values.appConfig.flyway.enabled | quote }}
             - name: SPRING_FLYWAY_LOCATIONS
