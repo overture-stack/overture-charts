@@ -109,7 +109,7 @@ spec:
                 secretKeyRef:
                   name: {{ template "song.fullname" . }}
                   key: score-accessToken
-            {{- if (contains "score-client-creds" .Values.appConfig.profiles) }}
+            {{- if (contains "score-client-cred" .Values.appConfig.profiles) }}
             - name: SCORE_CLIENTCREDENTIALS_SECRET
               valueFrom:
                 secretKeyRef:
