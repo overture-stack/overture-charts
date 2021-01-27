@@ -85,7 +85,7 @@ spec:
             - name: SPRING_FLYWAY_LOCATIONS
               value: "classpath:flyway/sql,classpath:db/migration"
             - name: SPRING_FLYWAY_PLACEHOLDERS_DEFAULT-PROVIDER
-              value: {{ .Values.appConfig.spring.flyway.placeholders.default-provider }}
+              value: {{ .Values.appConfig.defaultProvider }}
             - name: SWAGGER_HOST
               value: {{ .Values.appConfig.swaggerHost }}
             - name: SWAGGER_BASEURL
