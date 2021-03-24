@@ -133,6 +133,8 @@ spec:
               value: "https://{{ .Values.appConfig.host }}/api"
             - name: REACT_APP_EGO_CLIENT_ID
               value: {{ .Values.appConfig.egoClientId }}
+            - name: REACT_APP_KEYCLOAK_ENABLED
+              value: {{ .Values.appConfig.uiKeycloakEnabled }}
           ports:
             - name: http-ui
               containerPort: 8080

@@ -79,3 +79,5 @@ appConfig:
     durationMs: "43200000"
     cookieIsSecure: ""
   defaultProvider: ""
+  uiKeycloakEnabled: false
+
