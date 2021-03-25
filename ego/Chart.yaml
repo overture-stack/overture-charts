@@ -1,4 +1,4 @@
 apiVersion: v1
 description: A Helm chart for ego
 name: ego
-version: 2.4.0
+version: 2.5.0
