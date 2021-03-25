@@ -56,6 +56,8 @@ appConfig:
   # api configs
   activeProfiles: auth,grpc
   host: ego.local
+  keycloakClientID: ""
+  keycloakClientSecret: ""
   googleClientID: ""
   googleClientSecret: ""
   linkedInClientID: ""

@@ -29,6 +29,15 @@ spec:
               value: "8081"
             - name: SPRING_PROFILES_ACTIVE
               value: {{ .Values.appConfig.activeProfiles }}
+            - name: KEYCLOAK_CLIENT_CLIENTID
+              value: {{ .Values.appConfig.keycloakClientID }}
+            - name: KEYCLOAK_CLIENT_CLIENTSECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "ego.fullname" . }}
+                  key: keycloak-client-secret
+            - name: KEYCLOAK_CLIENT_PREESTABLISHEDREDIRECTURI
+              value: "https://{{ .Values.appConfig.host }}/api/oauth/login/keycloak"
             - name: GOOGLE_CLIENT_CLIENTID
               value: {{ .Values.appConfig.googleClientID }}
             - name: GOOGLE_CLIENT_CLIENTSECRET
