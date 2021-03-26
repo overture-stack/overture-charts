@@ -39,22 +39,21 @@ tolerations: []
 
 affinity: {}
 
-extraEnv: {}
-
 # choose rbac roles to enable
 rbac:
   create:
     # for vault kubernetes integration
     tokenReview: true
 
-postgres:
-  postgresUsername: postgres
-  postgresPassword: password
-  postgresDb: ego
+  psqlSecretName: registry-postgres-postgresql
+  databaseUrl: jdbc:postgresql://registry-postgres-postgresql.rdpc-collab-qa:5432/registry
+  
 
 appConfig:
   # api configs
   activeProfiles: auth,grpc
+  psqlSecretName: ""
+  databaseUrl: ""
   host: ego.local
   keycloakClientID: ""
   keycloakClientSecret: ""
@@ -82,4 +81,6 @@ appConfig:
     cookieIsSecure: ""
   defaultProvider: ""
   uiKeycloakEnabled: ""
+
+extraEnv: {}
 

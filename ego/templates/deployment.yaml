@@ -73,13 +73,13 @@ spec:
                   key: facebook-client-secret
             - name: FACEBOOK_CLIENT_PREESTABLISHEDREDIRECTURI
               value: "https://{{ .Values.appConfig.host }}/api/oauth/login/facebook"
+            - name: SPRING_DATASOURCE_URL
+              value: {{ .Values.appConfig.databaseUrl }}
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ template "ego.fullname" . }}-postgres
-                  key: postgres-password
-            - name: SPRING_DATASOURCE_URL
-              value: "jdbc:postgresql://{{ template "ego.fullname" . }}-postgres:5432/{{ .Values.postgres.postgresDb }}?stringtype=unspecified"
+                  name: {{ .Values.appConfig.psqlSecretName }}
+                  key: postgresql-password
             - name: SPRING_FLYWAY_ENABLED
               value: "true"
             - name: SPRING_FLYWAY_LOCATIONS

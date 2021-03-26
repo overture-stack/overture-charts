@@ -1,4 +1,0 @@
-dependencies:
-  - name: postgres
-    repository: https://overture-stack.github.io/charts-server
-    version: 0.2.0
