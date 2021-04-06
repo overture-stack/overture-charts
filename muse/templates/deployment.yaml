@@ -60,8 +60,30 @@ spec:
               value: {{ .Values.appConfig.port | quote }}
             - name: SPRING_PROFILES_ACTIVE
               value: {{ .Values.appConfig.spring.profiles.active | quote }}
+            - name: SPRING_R2DBC_URL
+              value: {{ .Values.appConfig.database.r2dbcUrl | quote }}
+            - name: SPRING_R2DBC_USERNAME
+              value: {{ .Values.appConfig.database.username | quote }}
+            - name: SPRING_R2DBC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.appConfig.database.passwordSecret }}
+                  key: postgresql-password
+            - name: SPRING_FLYWAY_URL
+              value: {{ .Values.appConfig.database.flywayUrl | quote }}
+            - name: SPRING_FLYWAY_USERNAME
+              value: {{ .Values.appConfig.database.username | quote }}
+            - name: SPRING_FLYWAY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.appConfig.database.passwordSecret }}
+                  key: postgresql-password
             - name: AUTH_JWTPUBLICKEYURL
               value: {{ .Values.appConfig.auth.jwtPublicKeyUrl | quote }}
+            - name: SONGSCORECLIENT_SONGROOTURL
+              value: {{ .Values.appConfig.songScoreClient.songRootUrl | quote }}
+            - name: SONGSCORECLIENT_SCOREROOTURL
+              value: {{ .Values.appConfig.songScoreClient.scoreRootUrl | quote }}
           {{- if .Values.env }}
             {{- range $key, $value := .Values.env }}
             - name: {{ $key }}

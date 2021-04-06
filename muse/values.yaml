@@ -88,5 +88,13 @@ appConfig:
   spring:
     profiles:
       active: "default"
+  database:
+    r2dbcUrl: r2dbc:postgresql://localhost:5432/muse
+    flywayUrl: jdbc:postgresql://localhost:5432/muse
+    username: postgres
+    passwordSecret: ""
   auth:
     jwtPublicKeyUrl: ""
+  songScoreClient:
+    songRootUrl: "http://localhost:8089/"
+    scoreRootUrl: "http://localhost:8087/"
