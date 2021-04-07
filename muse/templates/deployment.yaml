@@ -60,26 +60,25 @@ spec:
               value: {{ .Values.appConfig.port | quote }}
             - name: SPRING_PROFILES_ACTIVE
               value: {{ .Values.appConfig.spring.profiles.active | quote }}
-            - name: SPRING_R2DBC_URL
-              value: {{ .Values.appConfig.database.r2dbcUrl | quote }}
-            - name: SPRING_R2DBC_USERNAME
-              value: {{ .Values.appConfig.database.username | quote }}
-            - name: SPRING_R2DBC_PASSWORD
+            - name: POSTGRES_HOST
+              value: {{ .Values.appConfig.postgres.host | quote }}
+            - name: POSTGRES_PORT
+              value: {{ .Values.appConfig.postgres.port | quote }}
+            - name: POSTGRES_DATABASE
+              value: {{ .Values.appConfig.postgres.database | quote }}
+            - name: POSTGRES_USERNAME
+              value: {{ .Values.appConfig.postgres.username | quote }}
+            - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.appConfig.database.passwordSecret }}
-                  key: postgresql-password
-            - name: SPRING_FLYWAY_URL
-              value: {{ .Values.appConfig.database.flywayUrl | quote }}
-            - name: SPRING_FLYWAY_USERNAME
-              value: {{ .Values.appConfig.database.username | quote }}
-            - name: SPRING_FLYWAY_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.appConfig.database.passwordSecret }}
+                  name: {{ .Values.appConfig.postgres.passwordSecret }}
                   key: postgresql-password
             - name: AUTH_JWTPUBLICKEYURL
               value: {{ .Values.appConfig.auth.jwtPublicKeyUrl | quote }}
+            - name: AUTH_SCOPES_READ_0
+              value: {{ .Values.appConfig.auth.scopes.read | quote }}
+            - name: AUTH_SCOPES_WRITE_0
+              value: {{ .Values.appConfig.auth.scopes.write | quote }}
             - name: SONGSCORECLIENT_SONGROOTURL
               value: {{ .Values.appConfig.songScoreClient.songRootUrl | quote }}
             - name: SONGSCORECLIENT_SCOREROOTURL
