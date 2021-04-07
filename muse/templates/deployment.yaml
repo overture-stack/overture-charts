@@ -60,8 +60,29 @@ spec:
               value: {{ .Values.appConfig.port | quote }}
             - name: SPRING_PROFILES_ACTIVE
               value: {{ .Values.appConfig.spring.profiles.active | quote }}
+            - name: POSTGRES_HOST
+              value: {{ .Values.appConfig.postgres.host | quote }}
+            - name: POSTGRES_PORT
+              value: {{ .Values.appConfig.postgres.port | quote }}
+            - name: POSTGRES_DATABASE
+              value: {{ .Values.appConfig.postgres.database | quote }}
+            - name: POSTGRES_USERNAME
+              value: {{ .Values.appConfig.postgres.username | quote }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.appConfig.postgres.passwordSecret }}
+                  key: postgresql-password
             - name: AUTH_JWTPUBLICKEYURL
               value: {{ .Values.appConfig.auth.jwtPublicKeyUrl | quote }}
+            - name: AUTH_SCOPES_READ_0
+              value: {{ .Values.appConfig.auth.scopes.read | quote }}
+            - name: AUTH_SCOPES_WRITE_0
+              value: {{ .Values.appConfig.auth.scopes.write | quote }}
+            - name: SONGSCORECLIENT_SONGROOTURL
+              value: {{ .Values.appConfig.songScoreClient.songRootUrl | quote }}
+            - name: SONGSCORECLIENT_SCOREROOTURL
+              value: {{ .Values.appConfig.songScoreClient.scoreRootUrl | quote }}
           {{- if .Values.env }}
             {{- range $key, $value := .Values.env }}
             - name: {{ $key }}

@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: lepsalex/cancogen-muse # todo: change once we have gitHub repo + Jenkins
+  repository: ghcr.io/cancogen-virus-seq/muse
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -88,5 +88,17 @@ appConfig:
   spring:
     profiles:
       active: "default"
+  postgres:
+    host: ""
+    port: 5432
+    database: muse
+    username: postgres
+    passwordSecret: ""
   auth:
     jwtPublicKeyUrl: ""
+    scopes:
+      read: DOMAIN.READ
+      write: DOMAIN.WRITE
+  songScoreClient:
+    songRootUrl: "http://localhost:8089/"
+    scoreRootUrl: "http://localhost:8087/"
