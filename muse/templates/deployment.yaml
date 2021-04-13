@@ -85,14 +85,18 @@ spec:
               value: {{ .Values.appConfig.songScoreClient.scoreRootUrl | quote }}
             - name: SONGSCORECLIENT_TOKENURL
               value: {{ .Values.appConfig.songScoreClient.tokenUrl | quote }}
+            - name: SONGSCORECLIENT_CLIENTID
+              value: {{ .Values.appConfig.songScoreClient.clientId | quote }}
+            - name: SONGSCORECLIENT_CLIENTSECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "muse.fullname" . }}
+                  key: songscoreclient-clientsecret
           {{- if .Values.env }}
             {{- range $key, $value := .Values.env }}
             - name: {{ $key }}
               value: {{ $value | quote }}
             {{- end }}
-          {{- end }}
-          {{- with .Values.envYaml }}
-            {{- toYaml . | nindent 12 }}
           {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
