@@ -92,6 +92,12 @@ spec:
                 secretKeyRef:
                   name: {{ template "muse.fullname" . }}
                   key: songscoreclient-clientsecret
+            {{- range $i, $value := .Values.appConfig.cors.domainPatterns }}
+            - name: CORS_DOMAINPATTERNS_{{$i}}
+              value: {{ $value | quote }}
+            {{- end }}
+            - name: CORS_MAXAGE
+              value: {{ .Values.appConfig.cors.maxAge | quote }}
           {{- if .Values.env }}
             {{- range $key, $value := .Values.env }}
             - name: {{ $key }}

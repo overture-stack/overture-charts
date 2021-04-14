@@ -105,4 +105,9 @@ appConfig:
     tokenUrl: "http://localhost:8081/oauth/token"
     clientId: "adminId"
     # if cleintSecret is not set random secret generated, see './tempates/secret.yaml'
-    # clientSecret: "adminSecret"
+    # clientSecret: "adminSecret"x
+  cors:
+    domainPatterns:
+      - "http://localhost:3000"
+      - "https://localhost:3000"
+    maxAge: 3600
