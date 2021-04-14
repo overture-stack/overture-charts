@@ -83,6 +83,21 @@ spec:
               value: {{ .Values.appConfig.songScoreClient.songRootUrl | quote }}
             - name: SONGSCORECLIENT_SCOREROOTURL
               value: {{ .Values.appConfig.songScoreClient.scoreRootUrl | quote }}
+            - name: SONGSCORECLIENT_TOKENURL
+              value: {{ .Values.appConfig.songScoreClient.tokenUrl | quote }}
+            - name: SONGSCORECLIENT_CLIENTID
+              value: {{ .Values.appConfig.songScoreClient.clientId | quote }}
+            - name: SONGSCORECLIENT_CLIENTSECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "muse.fullname" . }}
+                  key: songscoreclient-clientsecret
+            {{- range $i, $value := .Values.appConfig.cors.domainPatterns }}
+            - name: CORS_DOMAINPATTERNS_{{$i}}
+              value: {{ $value | quote }}
+            {{- end }}
+            - name: CORS_MAXAGE
+              value: {{ .Values.appConfig.cors.maxAge | quote }}
           {{- if .Values.env }}
             {{- range $key, $value := .Values.env }}
             - name: {{ $key }}

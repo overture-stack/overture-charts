@@ -102,3 +102,12 @@ appConfig:
   songScoreClient:
     songRootUrl: "http://localhost:8089/"
     scoreRootUrl: "http://localhost:8087/"
+    tokenUrl: "http://localhost:8081/oauth/token"
+    clientId: "adminId"
+    # if cleintSecret is not set random secret generated, see './tempates/secret.yaml'
+    # clientSecret: "adminSecret"x
+  cors:
+    domainPatterns:
+      - "http://localhost:3000"
+      - "https://localhost:3000"
+    maxAge: 3600
