@@ -111,3 +111,5 @@ appConfig:
       - "http://localhost:3000"
       - "https://localhost:3000"
     maxAge: 3600
+  codeConfig:
+    maxHeadersSize: 16384
