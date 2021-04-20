@@ -98,6 +98,8 @@ spec:
             {{- end }}
             - name: CORS_MAXAGE
               value: {{ .Values.appConfig.cors.maxAge | quote }}
+            - name: CODECONFIG_MAXHEADERSSIZE
+              value: {{ .Values.appConfig.codeConfig.maxHeadersSize | quote }}
           {{- if .Values.env }}
             {{- range $key, $value := .Values.env }}
             - name: {{ $key }}
