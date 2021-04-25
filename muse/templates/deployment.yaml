@@ -92,14 +92,22 @@ spec:
                 secretKeyRef:
                   name: {{ template "muse.fullname" . }}
                   key: songscoreclient-clientsecret
+            - name: SONGSCORECLIENT_RETRYMAXATTEMPTS
+              value: {{ .Values.appConfig.songScoreClient.retryMaxAttempts | quote }}
+            - name: SONGSCORECLIENT_RETRYDELAYSEC
+              value: {{ .Values.appConfig.songScoreClient.retryDelaySec | quote }}
             {{- range $i, $value := .Values.appConfig.cors.domainPatterns }}
             - name: CORS_DOMAINPATTERNS_{{$i}}
               value: {{ $value | quote }}
             {{- end }}
             - name: CORS_MAXAGE
               value: {{ .Values.appConfig.cors.maxAge | quote }}
-            - name: CODECONFIG_MAXHEADERSSIZE
-              value: {{ .Values.appConfig.codeConfig.maxHeadersSize | quote }}
+            - name: CODECCONFIG_MAXHEADERSSIZE
+              value: {{ .Values.appConfig.codecConfig.maxHeadersSize | quote }}
+            - name: UPLOAD_BACKPRESSURE_HIGHTDE
+              value: {{ .Values.appConfig.upload.backpressure.highTide | quote }}
+            - name: UPLOAD_BACKPRESSURE_LOWTDE
+              value: {{ .Values.appConfig.upload.backpressure.lowTide | quote }}
           {{- if .Values.env }}
             {{- range $key, $value := .Values.env }}
             - name: {{ $key }}
