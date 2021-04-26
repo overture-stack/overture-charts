@@ -94,6 +94,7 @@ appConfig:
     database: muse
     username: postgres
     passwordSecret: ""
+    maxPoolSize: 20
   auth:
     jwtPublicKeyUrl: ""
     scopes:
@@ -116,4 +117,4 @@ appConfig:
   codecConfig:
     maxHeadersSize: 16384
   submitUpload:
-    concurrency: 5
+    maxInFlight: 5
