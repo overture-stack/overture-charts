@@ -104,10 +104,8 @@ spec:
               value: {{ .Values.appConfig.cors.maxAge | quote }}
             - name: CODECCONFIG_MAXHEADERSSIZE
               value: {{ .Values.appConfig.codecConfig.maxHeadersSize | quote }}
-            - name: UPLOAD_BACKPRESSURE_HIGHTDE
-              value: {{ .Values.appConfig.upload.backpressure.highTide | quote }}
-            - name: UPLOAD_BACKPRESSURE_LOWTDE
-              value: {{ .Values.appConfig.upload.backpressure.lowTide | quote }}
+            - name: SUBMITUPLOAD_CONCURRENCY
+              value: {{ .Values.appConfig.submitUpload.concurrency | quote }}
           {{- if .Values.env }}
             {{- range $key, $value := .Values.env }}
             - name: {{ $key }}
