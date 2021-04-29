@@ -98,8 +98,10 @@ appConfig:
   auth:
     jwtPublicKeyUrl: ""
     scopes:
-      read: DOMAIN.READ
-      write: DOMAIN.WRITE
+      study:
+        prefix: "muse."
+        suffix: ".WRITE"
+      system: DOMAIN.WRITE
   songScoreClient:
     songRootUrl: "http://localhost:8089/"
     scoreRootUrl: "http://localhost:8087/"

@@ -77,10 +77,12 @@ spec:
               value: {{ .Values.appConfig.postgres.maxPoolSize | quote }}
             - name: AUTH_JWTPUBLICKEYURL
               value: {{ .Values.appConfig.auth.jwtPublicKeyUrl | quote }}
-            - name: AUTH_SCOPES_READ_0
-              value: {{ .Values.appConfig.auth.scopes.read | quote }}
-            - name: AUTH_SCOPES_WRITE_0
-              value: {{ .Values.appConfig.auth.scopes.write | quote }}
+            - name: AUTH_SCOPES_STUDY_PREFIX
+              value: {{ .Values.appConfig.auth.scopes.study.prefix | quote }}
+            - name: AUTH_SCOPES_STUDY_SUFFIX
+              value: {{ .Values.appConfig.auth.scopes.study.suffix | quote }}
+            - name: AUTH_SCOPES_SYSTEM
+              value: {{ .Values.appConfig.auth.scopes.system | quote }}
             - name: SONGSCORECLIENT_SONGROOTURL
               value: {{ .Values.appConfig.songScoreClient.songRootUrl | quote }}
             - name: SONGSCORECLIENT_SCOREROOTURL
