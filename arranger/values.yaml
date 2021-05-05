@@ -69,7 +69,7 @@ apiImage:
   repository: ghcr.io/overture-stack/arranger-server
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "2.4.0"
+  tag: "latest"
 
 apiConfig:
   host: https://arranger-api.local
@@ -93,7 +93,7 @@ uiImage:
   repository: ghcr.io/overture-stack/arranger-ui
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "2.4.0"
+  tag: "latest"
 
 uiConfig:
   enabled: false
