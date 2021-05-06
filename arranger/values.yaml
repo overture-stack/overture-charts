@@ -66,10 +66,10 @@ autoscaling:
 #  API Values
 ##############################
 apiImage:
-  repository: overture/arranger-server
+  repository: ghcr.io/overture-stack/arranger-server
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "2.4.0"
+  tag: "latest"
 
 apiConfig:
   host: https://arranger-api.local
@@ -90,10 +90,10 @@ apiIngress:
 #  UI Values
 ##############################
 uiImage:
-  repository: overture/arranger-ui
+  repository: ghcr.io/overture-stack/arranger-ui
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "2.4.0"
+  tag: "latest"
 
 uiConfig:
   enabled: false
