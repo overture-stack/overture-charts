@@ -83,23 +83,23 @@ spec:
               value: {{ .Values.appConfig.auth.scopes.study.suffix | quote }}
             - name: AUTH_SCOPES_SYSTEM
               value: {{ .Values.appConfig.auth.scopes.system | quote }}
-            - name: SONGSCORECLIENT_SONGROOTURL
-              value: {{ .Values.appConfig.songScoreClient.songRootUrl | quote }}
-            - name: SONGSCORECLIENT_SCOREROOTURL
-              value: {{ .Values.appConfig.songScoreClient.scoreRootUrl | quote }}
-            - name: SONGSCORECLIENT_TOKENURL
-              value: {{ .Values.appConfig.songScoreClient.tokenUrl | quote }}
-            - name: SONGSCORECLIENT_CLIENTID
-              value: {{ .Values.appConfig.songScoreClient.clientId | quote }}
-            - name: SONGSCORECLIENT_CLIENTSECRET
+            - name: ARIACLIENT_SONGROOTURL
+              value: {{ .Values.appConfig.ariaClient.songRootUrl | quote }}
+            - name: ARIACLIENT_SCOREROOTURL
+              value: {{ .Values.appConfig.ariaClient.scoreRootUrl | quote }}
+            - name: ARIACLIENT_TOKENURL
+              value: {{ .Values.appConfig.ariaClient.tokenUrl | quote }}
+            - name: ARIACLIENT_CLIENTID
+              value: {{ .Values.appConfig.ariaClient.clientId | quote }}
+            - name: ARIACLIENT_CLIENTSECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ template "muse.fullname" . }}
-                  key: songscoreclient-clientsecret
-            - name: SONGSCORECLIENT_RETRYMAXATTEMPTS
-              value: {{ .Values.appConfig.songScoreClient.retryMaxAttempts | quote }}
-            - name: SONGSCORECLIENT_RETRYDELAYSEC
-              value: {{ .Values.appConfig.songScoreClient.retryDelaySec | quote }}
+                  key: ariaclient-clientsecret
+            - name: ARIACLIENT_RETRYMAXATTEMPTS
+              value: {{ .Values.appConfig.ariaClient.retryMaxAttempts | quote }}
+            - name: ARIACLIENT_RETRYDELAYSEC
+              value: {{ .Values.appConfig.ariaClient.retryDelaySec | quote }}
             {{- range $i, $value := .Values.appConfig.cors.domainPatterns }}
             - name: CORS_DOMAINPATTERNS_{{$i}}
               value: {{ $value | quote }}
