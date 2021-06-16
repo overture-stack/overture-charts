@@ -102,7 +102,7 @@ appConfig:
         prefix: "muse."
         suffix: ".WRITE"
       system: DOMAIN.WRITE
-  songScoreClient:
+  ariaClient:
     songRootUrl: "http://localhost:8089/"
     scoreRootUrl: "http://localhost:8087/"
     tokenUrl: "http://localhost:8081/oauth/token"
