@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: overture/rollcall
+  repository: ghcr.io/overture-stack/rollcall
   tag: edge
   pullPolicy: Always
 
@@ -68,3 +68,4 @@ rbac:
   create:
     # for vault kubernetes integration
     tokenReview: false
+
