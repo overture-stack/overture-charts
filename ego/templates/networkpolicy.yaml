@@ -20,7 +20,7 @@ spec:
     - from:
         - podSelector:
             matchLabels:
-              {{ template "ego.name" . }}-client: "true"
+              app.oicr.org/app.role: "ego.client"
 ---
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
