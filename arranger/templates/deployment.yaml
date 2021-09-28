@@ -70,17 +70,22 @@ spec:
             - name: REACT_APP_ARRANGER_ADMIN_ROOT
               value: {{ .Values.uiConfig.serverUrl }}/admin/graphql
             - name: NGINX_CONF_PATH
-              value: /custom-nginx/nginx.conf
+              value: /etc/nginx/nginx.conf
           volumeMounts:
-          - name: nginx-conf
-            mountPath: /custom-nginx
+          - name: nginx-config
+            mountPath: /etc/nginx/nginx.conf
+            subPath: nginx.conf
+          - name: nginx-config
+            mountPath: /etc/nginx/env-config.template.js
+            subPath: env-config.template.js
           - name: nginx-cache
             mountPath: /var/cache/nginx
           - name: nginx-run
             mountPath: /var/run
       volumes:
-        - name: nginx-conf
-          emptyDir: {}
+        - name: nginx-config
+          configMap:
+            name: {{ include "arranger.fullname" . }}-nginx-config
         - name: nginx-cache
           emptyDir: {}
         - name: nginx-run
