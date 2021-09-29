@@ -40,7 +40,7 @@ data:
             }
         }
     }
-  env-config.template.js: |-
+  env-config.js: |-
     window.__env__ = {
     REACT_APP_BASE_URL: '{{ .Values.uiConfig.ReactAppBaseURL }}',
     REACT_APP_ARRANGER_ADMIN_ROOT: '/{{ .Values.uiConfig.ReactAppBaseURL }}/admin/graphql'.replace('//', '/'),

@@ -76,8 +76,8 @@ spec:
             mountPath: /etc/nginx/nginx.conf
             subPath: nginx.conf
           - name: nginx-config
-            mountPath: /etc/nginx/env-config.template.js
-            subPath: env-config.template.js
+            mountPath: /etc/nginx/env-config.js
+            subPath: env-config.js
           - name: nginx-cache
             mountPath: /var/cache/nginx
           - name: nginx-run
