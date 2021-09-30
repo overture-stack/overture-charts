@@ -99,6 +99,7 @@ uiConfig:
   enabled: false
   serverUrl: https://arranger-api.local/api
   port: 8080
+  ReactAppBaseURL: ''
 
 uiIngress:
   enabled: false

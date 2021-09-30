@@ -1,6 +1,8 @@
 {{- if .Values.apiIngress.enabled -}}
 {{- $fullName := include "arranger.fullname" . -}}
-{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+{{- if semverCompare ">=1.19" .Capabilities.KubeVersion.Version -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14" .Capabilities.KubeVersion.Version }}
 apiVersion: networking.k8s.io/v1beta1
 {{- else -}}
 apiVersion: extensions/v1beta1
@@ -29,8 +31,18 @@ spec:
     - host: {{ .Values.apiIngress.host }}
       http:
         paths:
+{{- if semverCompare ">=1.19" .Capabilities.KubeVersion.Version }}
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ $fullName }}
+                port:
+                  name: {{ .Chart.Name }}-api
+{{- else }}
           - path: /
             backend:
               serviceName: {{ $fullName }}
               servicePort: {{ .Chart.Name }}-api
+{{- end }}
 {{- end }}
