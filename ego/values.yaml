@@ -25,11 +25,13 @@ ingressApi:
   enabled: false
   host: ego.local
   tls: []
+  # className: private
 
 ingressUi:
   enabled: false
   host: ui.ego.local
   tls: []
+  # className: private
 
 resources: {}
 
@@ -47,7 +49,7 @@ rbac:
 
   psqlSecretName: registry-postgres-postgresql
   databaseUrl: jdbc:postgresql://registry-postgres-postgresql.rdpc-collab-qa:5432/registry
-  
+
 
 appConfig:
   # api configs

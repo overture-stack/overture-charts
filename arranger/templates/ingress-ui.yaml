@@ -17,7 +17,10 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-{{- if .Values.uiIngress.tls }}
+  {{- if and .Values.uiIngress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.Version) }}
+  ingressClassName: {{ .Values.uiIngress.className }}
+  {{- end }}
+  {{- if .Values.uiIngress.tls }}
   tls:
   {{- range .Values.uiIngress.tls }}
     - hosts:
@@ -26,7 +29,7 @@ spec:
       {{- end }}
       secretName: {{ .secretName }}
   {{- end }}
-{{- end }}
+  {{- end }}
   rules:
     - host: {{ .Values.uiIngress.host }}
       http:

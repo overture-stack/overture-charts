@@ -85,6 +85,7 @@ apiIngress:
   annotations: {}
   host: arranger-api.local
   tls: []
+  #className: private
 
 ##############################
 #  UI Values
@@ -106,4 +107,5 @@ uiIngress:
   annotations: {}
   host: arranger-ui.local
   tls: []
+  #className: private
 

@@ -28,6 +28,8 @@ ingress:
    - dms-ui.example.local
   tls: []
   paths: [/]
+  # className: private
+
 
 deployment:
   livenessProbe:
@@ -55,3 +57,4 @@ tolerations: []
 affinity: {}
 
 appConfig: {}
+
