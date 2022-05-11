@@ -22,6 +22,7 @@ ingress:
   hosts:
     - score.local
   tls: []
+  # className: private
 
 resources: {}
 

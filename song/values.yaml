@@ -27,6 +27,7 @@ ingress:
   hosts:
     - song.local
   tls: []
+  # className: private
 
 resources: {}
 

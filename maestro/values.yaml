@@ -23,6 +23,7 @@ ingress:
     - host: maestro.local
       paths: []
   tls: []
+  # className: private
 
 resources: {}
 
