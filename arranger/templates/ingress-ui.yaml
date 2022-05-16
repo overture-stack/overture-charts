@@ -1,5 +1,7 @@
 {{- if and .Values.uiIngress.enabled .Values.uiConfig.enabled -}}
 {{- $fullName := include "arranger.fullname" . -}}
+{{- $svcPort := .Values.service.uiPort -}}
+{{- $svcPortName := .Values.service.uiPortName -}}
 {{- if semverCompare ">=1.19" .Capabilities.KubeVersion.Version }}
 apiVersion: networking.k8s.io/v1
 {{- else if semverCompare ">=1.14" .Capabilities.KubeVersion.Version }}
@@ -31,21 +33,27 @@ spec:
   {{- end }}
   {{- end }}
   rules:
-    - host: {{ .Values.uiIngress.host }}
+    {{- range .Values.uiIngress.hosts }}
+    - host: {{ .host | quote }}
       http:
         paths:
-{{- if semverCompare ">=1.19" .Capabilities.KubeVersion.Version }}
-          - path: /
-            pathType: ImplementationSpecific
+          {{- range .paths }}
+          - path: {{ .path }}
+            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
+            pathType: {{ .pathType }}
+            {{- end }}
             backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
                 name: {{ $fullName }}
                 port:
-                  name: {{ .Chart.Name }}-ui
-{{- else -}}
-          - path: /
-            backend:
+                  name: {{ $svcPortName }}
+              {{- else }}
               serviceName: {{ $fullName }}
-              servicePort: {{ .Chart.Name }}-ui
+              servicePort: {{ $svcPort }}
+              {{- end }}
+          {{- end }}
+    {{- end }}
 {{- end }}
-{{- end }}
+
+

@@ -1,12 +1,14 @@
 {{- if .Values.apiIngress.enabled -}}
 {{- $fullName := include "arranger.fullname" . -}}
-  {{- if semverCompare ">=1.19" .Capabilities.KubeVersion.Version -}}
-  apiVersion: networking.k8s.io/v1
-  {{- else if semverCompare ">=1.14" .Capabilities.KubeVersion.Version }}
-  apiVersion: networking.k8s.io/v1beta1
-  {{- else -}}
-  apiVersion: extensions/v1beta1
-  {{- end }}
+{{- $svcPort := .Values.service.apiPort -}}
+{{- $svcPortName := .Values.service.apiPortName -}}
+{{- if semverCompare ">=1.19" .Capabilities.KubeVersion.Version -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14" .Capabilities.KubeVersion.Version }}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
 kind: Ingress
 metadata:
   name: {{ $fullName }}-api
@@ -31,21 +33,31 @@ spec:
   {{- end }}
   {{- end }}
   rules:
-    - host: {{ .Values.apiIngress.host }}
+    {{- range .Values.apiIngress.hosts }}
+    - host: {{ .host | quote }}
       http:
         paths:
-{{- if semverCompare ">=1.19" .Capabilities.KubeVersion.Version }}
-          - path: /
-            pathType: ImplementationSpecific
+          {{- range .paths }}
+          - path: {{ .path }}
+            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
+            pathType: {{ .pathType }}
+            {{- end }}
             backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
                 name: {{ $fullName }}
                 port:
-                  name: {{ .Chart.Name }}-api
-{{- else }}
-          - path: /
-            backend:
+                  name: {{ $svcPortName }}
+              {{- else }}
               serviceName: {{ $fullName }}
-              servicePort: {{ .Chart.Name }}-api
+              servicePort: {{ $svcPort }}
+              {{- end }}
+          {{- end }}
+    {{- end }}
 {{- end }}
-{{- end }}
+
+
+
+
+
+

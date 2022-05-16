@@ -35,7 +35,9 @@ securityContext:
 service:
   type: ClusterIP
   apiPort: 80
+  apiPortName: arranger-api
   uiPort: 81
+  uiPortName: arranger-ui
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -80,12 +82,20 @@ apiConfig:
     password:
       secretName: ""
 
+
 apiIngress:
   enabled: false
   annotations: {}
-  host: arranger-api.local
-  tls: []
-  #className: private
+  # className: private
+  hosts:
+    - host: arranger-api.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - hosts:
+      - arranger-api.local
+      secretName: arranger-api.local
 
 ##############################
 #  UI Values
@@ -105,7 +115,13 @@ uiConfig:
 uiIngress:
   enabled: false
   annotations: {}
-  host: arranger-ui.local
-  tls: []
   #className: private
-
+  hosts:
+    - host: arranger-api.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - hosts:
+      - arranger-api.local
+      secretName: arranger-api.local
