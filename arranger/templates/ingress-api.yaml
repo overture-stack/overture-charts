@@ -17,7 +17,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if and .Values.apiIingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.Version) }}
+  {{- if and .Values.apiIngress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.Version) }}
   ingressClassName: {{ .Values.apiIngress.className }}
   {{- end }}
   {{- if .Values.apiIngress.tls }}

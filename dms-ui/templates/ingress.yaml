@@ -1,5 +1,7 @@
 {{- if .Values.ingress.enabled -}}
 {{- $ingressPaths := .Values.ingress.paths -}}
+{{- $svcPort := .Values.service.port -}}
+{{- $svcPortName := .Values.service.portName -}}
 {{- $fullName := include "dms-ui.fullname" . -}}
 {{- if semverCompare ">=1.19" .Capabilities.KubeVersion.Version -}}
 apiVersion: networking.k8s.io/v1
@@ -36,14 +38,27 @@ spec:
   {{- end }}
   rules:
   {{- range .Values.ingress.hosts }}
-    - host: {{ . | quote }}
+    - host: {{ .host | quote }}
       http:
         paths:
-          {{- range $ingressPaths }}
-          - path: {{ . }}
+          {{- range .paths }}
+          - path: {{ .path }}
+            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
+            pathType: {{ .pathType }}
+            {{- end }}
             backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: {{ $fullName }}
+                port:
+                  name: {{ $svcPortName }}
+              {{- else }}
               serviceName: {{ $fullName }}
-              servicePort: http
+              servicePort: {{ $svcPort }}
+              {{- end }}
           {{- end }}
   {{- end }}
 {{- end }}
+
+
+

@@ -15,6 +15,7 @@ fullnameOverride: ""
 service:
   type: ClusterIP
   port: 80
+  portName: http
 
 podSecurityContext:
   runAsGroup: 9999
@@ -25,9 +26,11 @@ ingress:
   enabled: true
   annotations: {}
   hosts:
-   - dms-ui.example.local
+    - host: dms-ui.example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
   tls: []
-  paths: [/]
   # className: private
 
 
