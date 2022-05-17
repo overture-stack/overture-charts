@@ -24,15 +24,18 @@ podSecurityContext:
 
 ingress:
   enabled: true
-  annotations: {}
+  # annotations:
+  #   cert-manager.io/cluster-issuer: letsencrypt
   hosts:
     - host: dms-ui.example.local
       paths:
         - path: /
           pathType: ImplementationSpecific
-  tls: []
+  # tls:
+  #   - hosts:
+  #     - dms-ui.example.local
+  #     secretName: dms-ui.example.local
   # className: private
-
 
 deployment:
   livenessProbe:

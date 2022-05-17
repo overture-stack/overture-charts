@@ -85,7 +85,8 @@ apiConfig:
 
 apiIngress:
   enabled: false
-  annotations: {}
+  # annotations:
+  #   cert-manager.io/cluster-issuer: letsencrypt
   # className: private
   hosts:
     - host: arranger-api.local
@@ -114,14 +115,15 @@ uiConfig:
 
 uiIngress:
   enabled: false
-  annotations: {}
-  #className: private
+  # annotations:
+  #   cert-manager.io/cluster-issuer: letsencrypt
+  # className: private
   hosts:
-    - host: arranger-api.local
+    - host: arranger-ui.local
       paths:
         - path: /
           pathType: ImplementationSpecific
   tls:
     - hosts:
-      - arranger-api.local
-      secretName: arranger-api.local
+      - arranger-ui.local
+      secretName: arranger-ui.local

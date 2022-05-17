@@ -16,23 +16,22 @@ fullnameOverride: ""
 service:
   type: ClusterIP
   port: 80
+  portName: http
 
 ingress:
-  enabled: false
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod-a
   # className: private
+  enabled: false
   hosts:
     - host: lectern.local
       paths:
         - path: /
           pathType: ImplementationSpecific
-
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+  # tls:
+  #   - hosts:
+  #     - lectern.local
+  #     secretName: lectern.local
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

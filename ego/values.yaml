@@ -26,18 +26,25 @@ serviceUi:
   port: http-ui
 
 ingressApi:
+  # annotations:
+  #   cert-manager.io/cluster-issuer: letsencrypt
+  # className: private
   enabled: false
   hosts:
     - host: ego.local
       paths:
         - path: /api/(.*)
           pathType: ImplementationSpecific
+
   # tls:
   #   - hosts:
-  #     - host: ego.local
-  # className: private
+  #     - ego.local
+  #     secretName: ego.local
 
 ingressUi:
+  # annotations:
+  #   cert-manager.io/cluster-issuer: letsencrypt
+  # className: private
   enabled: false
   hosts:
     - host: ui.ego.local
@@ -46,8 +53,8 @@ ingressUi:
           pathType: ImplementationSpecific
   # tls:
   #   - hosts:
-  #     - host: ui.ego.local
-  # className: private
+  #     - ui.ego.local
+  #     secretName: ui.ego.local
 
 resources: {}
 
