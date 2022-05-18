@@ -15,14 +15,23 @@ fullnameOverride: ""
 service:
   type: ClusterIP
   port: 80
+  portName: http
 
 ingress:
-  enabled: false
-  annotations: {}
-  hosts:
-    - score.local
-  tls: []
+  # annotations:
+  #   cert-manager.io/cluster-issuer: letsencrypt
   # className: private
+  enabled: false
+  hosts:
+    - host: score.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  # tls:
+  #   - hosts:
+  #     - score.local
+  #     secretName: score.local
+
 
 resources: {}
 
@@ -37,8 +46,8 @@ extraEnv: {}
 appConfig:
   springProfiles: amazon,collaboratory,prod,secure
   authServer:
-    clientId: 
-    clientSecret: 
+    clientId:
+    clientSecret:
     url: https://ego.local/api/o/check_token
     tokenName: token
     scope:
@@ -56,11 +65,11 @@ appConfig:
       enable: false
       publicKeyUrl: https://auth.local/oauth/public_key
   objectStorage:
-    accessKey: 
-    secretKey: 
+    accessKey:
+    secretKey:
     url: https://object.local
     sigV4Enabled: true
-  song:  
+  song:
     serverUrl: https://song.local
   storageServer:
     dataBucket: qa.icgc
