@@ -15,6 +15,7 @@ fullnameOverride: ""
 service:
   type: ClusterIP
   port: 80
+  portName: http
 
 podSecurityContext:
   runAsGroup: 9999
@@ -22,12 +23,19 @@ podSecurityContext:
   runAsUser: 9999
 
 ingress:
-  enabled: true
-  annotations: {}
+  enabled: false
+  # annotations:
+  #   cert-manager.io/cluster-issuer: letsencrypt
   hosts:
-   - dms-ui.example.local
-  tls: []
-  paths: [/]
+    - host: dms-ui.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  # tls:
+  #   - hosts:
+  #     - dms-ui.local
+  #     secretName: dms-ui.local
+  # className: private
 
 deployment:
   livenessProbe:
@@ -55,3 +63,4 @@ tolerations: []
 affinity: {}
 
 appConfig: {}
+

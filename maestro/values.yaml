@@ -15,14 +15,22 @@ fullnameOverride: ""
 service:
   type: ClusterIP
   port: 11235
+  portName: http
 
 ingress:
+  # annotations:
+  #   cert-manager.io/cluster-issuer: letsencrypt
+  # className: private
   enabled: false
-  annotations: {}
   hosts:
     - host: maestro.local
-      paths: []
-  tls: []
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  # tls:
+  #   - hosts:
+  #     - maestro.local
+  #     secretName: maestro.local
 
 resources: {}
 

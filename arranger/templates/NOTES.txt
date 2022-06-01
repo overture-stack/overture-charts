@@ -1,6 +1,12 @@
-1. Get the api URL by running these commands:
+1. API URL:
 {{- if .Values.apiIngress.enabled }}
-http{{ if $.Values.apiIngress.tls }}s{{ end }}://{{ $.Values.apiIngress.host }}/api
+
+{{- range $host := .Values.apiIngress.hosts }}
+  {{- range .paths }}
+  http{{ if $.Values.apiIngress.tls }}s{{ end }}://{{ $host.host }}{{ .path }}
+  {{- end }}
+{{- end }}
+
 {{- else if contains "NodePort" .Values.service.type }}
   export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "arranger.fullname" . }})
   export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
@@ -24,8 +30,12 @@ http{{ if $.Values.apiIngress.tls }}s{{ end }}://{{ $.Values.apiIngress.host }}/
 {{- end }}
 
 {{- if .Values.uiConfig.enabled }}
-2. Get the ui URL by running these commands:
+2. UI URL:
 {{- if .Values.uiIngress.enabled }}
-http{{ if $.Values.uiIngress.tls }}s{{ end }}://{{ $.Values.uiIngress.host }}/
+{{- range $host := .Values.uiIngress.hosts }}
+  {{- range .paths }}
+  http{{ if $.Values.uiIngress.tls }}s{{ end }}://{{ $host.host }}{{ .path }}
+  {{- end }}
+{{- end }}
 {{- end }}
 {{- end }}

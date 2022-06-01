@@ -20,13 +20,22 @@ fullnameOverride: ""
 service:
   type: ClusterIP
   port: 80
+  portName: http
 
 ingress:
   enabled: false
-  annotations: {}
+  # annotations:
+  #   cert-manager.io/cluster-issuer: letsencrypt
   hosts:
-    - song.local
-  tls: []
+    - host: song.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  # className: private
+  # tls:
+  #   - hosts:
+  #     - song.local
+  #     secretName: song.local
 
 resources: {}
 

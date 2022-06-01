@@ -20,16 +20,41 @@ fullnameOverride: ""
 service:
   type: ClusterIP
   port: 80
+serviceApi:
+  port: http
+serviceUi:
+  port: http-ui
 
 ingressApi:
+  # annotations:
+  #   cert-manager.io/cluster-issuer: letsencrypt
+  # className: private
   enabled: false
-  host: ego.local
-  tls: []
+  hosts:
+    - host: ego.local
+      paths:
+        - path: /api/(.*)
+          pathType: ImplementationSpecific
+
+  # tls:
+  #   - hosts:
+  #     - ego.local
+  #     secretName: ego.local
 
 ingressUi:
+  # annotations:
+  #   cert-manager.io/cluster-issuer: letsencrypt
+  # className: private
   enabled: false
-  host: ui.ego.local
-  tls: []
+  hosts:
+    - host: ui.ego.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  # tls:
+  #   - hosts:
+  #     - ui.ego.local
+  #     secretName: ui.ego.local
 
 resources: {}
 
@@ -47,7 +72,7 @@ rbac:
 
   psqlSecretName: registry-postgres-postgresql
   databaseUrl: jdbc:postgresql://registry-postgres-postgresql.rdpc-collab-qa:5432/registry
-  
+
 
 appConfig:
   # api configs
