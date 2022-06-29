@@ -133,7 +133,6 @@ spec:
                 secretKeyRef:
                   name: {{ template "song.fullname" . }}-postgres
                   key: postgres-password
-{{- end }}
 
 {{- if .Values.extraEnv }}
   {{ range $key, $value := .Values.extraEnv }}
