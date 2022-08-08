@@ -59,8 +59,6 @@ ingress:
   #     - muse.local
   #     secretName: muse.local
 
-
-
 resources:
   {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -124,3 +122,23 @@ appConfig:
     maxHeadersSize: 16384
   submitUpload:
     maxInFlight: 5
+
+probes:
+  liveness:
+    path: /actuator/health
+    initialDelaySeconds: 30
+    timeoutSeconds: 2
+    periodSeconds: 8
+    failureThreshold: 1
+  readiness:
+    path: /actuator/health
+    initialDelaySeconds: 60
+    timeoutSeconds: 2
+    periodSeconds: 3
+    failureThreshold: 2
+  startup:
+    path: /actuator/health
+    initialDelaySeconds: 60
+    timeoutSeconds: 2
+    periodSeconds: 3
+    failureThreshold: 2
