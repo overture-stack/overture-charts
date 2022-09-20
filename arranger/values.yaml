@@ -1,4 +1,4 @@
-# Default values for arranger.
+# Default values for Arranger.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -27,7 +27,7 @@ podSecurityContext:
 securityContext:
   capabilities:
     drop:
-    - ALL
+      - ALL
   readOnlyRootFilesystem: true
   runAsNonRoot: true
   runAsUser: 1000
@@ -39,7 +39,8 @@ service:
   uiPort: 81
   uiPortName: arranger-ui
 
-resources: {}
+resources:
+  {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -65,6 +66,20 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 ##############################
+#  Arranger V3 Values
+##############################
+appConfig:
+  documentType: ""
+  index: ""
+
+serverConfigs:
+  baseConfigs: "{}"
+  extendedConfigs: "{}"
+  facetsConfigs: "{}"
+  matchboxConfigs: "{}"
+  tableConfigs: "{}"
+
+##############################
 #  API Values
 ##############################
 apiImage:
@@ -78,10 +93,9 @@ apiConfig:
   port: 5050
   es:
     host: "http://elasticsearch:9200"
-    username: ""  #If empty or not defined, ES configured without auth
+    username: "" #If empty or not defined, ES configured without auth
     password:
       secretName: ""
-
 
 apiIngress:
   enabled: false
@@ -95,7 +109,7 @@ apiIngress:
           pathType: ImplementationSpecific
   tls:
     - hosts:
-      - arranger-api.local
+        - arranger-api.local
       secretName: arranger-api.local
 
 ##############################
@@ -111,7 +125,7 @@ uiConfig:
   enabled: false
   serverUrl: https://arranger-api.local/api
   port: 8080
-  ReactAppBaseURL: ''
+  ReactAppBaseURL: ""
 
 uiIngress:
   enabled: false
@@ -125,5 +139,5 @@ uiIngress:
           pathType: ImplementationSpecific
   tls:
     - hosts:
-      - arranger-ui.local
+        - arranger-ui.local
       secretName: arranger-ui.local
