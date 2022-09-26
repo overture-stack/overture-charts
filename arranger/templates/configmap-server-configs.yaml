@@ -23,6 +23,5 @@ data:
   table.json: |
     {{- include "common.tplvalues.render" ( dict "value" .Values.serverConfigs.tableConfigs "context" $ ) | nindent 4 }}
 
-immutable: true
 {{- end }}
 

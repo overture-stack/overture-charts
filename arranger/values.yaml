@@ -1,21 +1,51 @@
 # Default values for Arranger.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+affinity: {}
 
-replicaCount: 1
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
 
-imagePullSecrets: []
-nameOverride: ""
+config:
+  documentType: ""
+  es:
+    host: "http://elasticsearch:9200"
+    password:
+      secretName: ""
+    username: "" #If empty or not defined, ES configured without auth
+  index: ""
+  port: 5050
+
 fullnameOverride: ""
 
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Annotations to add to the service account
-  annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
+image:
+  repository: ghcr.io/overture-stack/arranger-server
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+imagePullSecrets: []
+
+ingress:
+  enabled: false
+  # annotations:
+  #   cert-manager.io/cluster-issuer: letsencrypt
+  # className: private
+  hosts:
+    - host: arranger-server.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - arranger-server.local
+      secretName: arranger-server.local
+
+nameOverride: ""
+
+nodeSelector: {}
 
 podAnnotations: {}
 
@@ -24,20 +54,7 @@ podSecurityContext:
   runAsNonRoot: true
   runAsUser: 9999
 
-securityContext:
-  capabilities:
-    drop:
-      - ALL
-  readOnlyRootFilesystem: true
-  runAsNonRoot: true
-  runAsUser: 1000
-
-service:
-  type: ClusterIP
-  apiPort: 80
-  apiPortName: arranger-api
-  uiPort: 81
-  uiPortName: arranger-ui
+replicaCount: 1
 
 resources:
   {}
@@ -52,25 +69,13 @@ resources:
   #   cpu: 100m
   #   memory: 128Mi
 
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
-
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
-
-##############################
-#  Arranger V3 Values
-##############################
-appConfig:
-  documentType: ""
-  index: ""
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
 
 serverConfigs:
   baseConfigs: "{}"
@@ -79,42 +84,43 @@ serverConfigs:
   matchboxConfigs: "{}"
   tableConfigs: "{}"
 
-##############################
-#  API Values
-##############################
-apiImage:
-  repository: ghcr.io/overture-stack/arranger-server
-  pullPolicy: Always
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+service:
+  type: ClusterIP
+  port: 80
+  portName: arranger-server
+  uiPort: 81
+  uiPortName: arranger-ui
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+tolerations: []
+
+####################
+# To be deprecated
+####################
 
 apiConfig:
-  host: https://arranger-api.local
-  port: 5050
   es:
-    host: "http://elasticsearch:9200"
-    username: "" #If empty or not defined, ES configured without auth
+    host: ""
     password:
       secretName: ""
+    username: ""
+  port: ""
 
-apiIngress:
-  enabled: false
-  # annotations:
-  #   cert-manager.io/cluster-issuer: letsencrypt
-  # className: private
-  hosts:
-    - host: arranger-api.local
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls:
-    - hosts:
-        - arranger-api.local
-      secretName: arranger-api.local
+apiImage:
+  pullPolicy: ""
+  repository: ""
+  tag: ""
 
-##############################
-#  UI Values
-##############################
+apiIngress: {}
+
 uiImage:
   repository: ghcr.io/overture-stack/arranger-ui
   pullPolicy: Always
@@ -123,7 +129,7 @@ uiImage:
 
 uiConfig:
   enabled: false
-  serverUrl: https://arranger-api.local/api
+  serverUrl: https://arranger-server.local/api
   port: 8080
   ReactAppBaseURL: ""
 

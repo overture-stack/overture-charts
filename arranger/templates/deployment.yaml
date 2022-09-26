@@ -33,34 +33,30 @@ spec:
     {{- end }}
 
       containers:
-        - name: api
+        - name: server
           env:
-          {{- if .Values.appConfig.documentType }}
             - name: DOCUMENT_TYPE
-              value: {{ .Values.appConfig.documentType }}
-          {{- end }}
+              value: {{ .Values.config.documentType }}
 
             - name: ES_HOST
-              value: {{ coalesce .Values.appConfig.es.host .Values.apiConfig.es.host }}
+              value: {{ coalesce .Values.apiConfig.es.host .Values.config.es.host }}
 
-          {{- if .Values.apiConfig.es.username }}
+          {{- if (coalesce .Values.apiConfig.es.username .Values.config.es.username) }}
             - name: ES_USER
-              value: {{ .Values.apiConfig.es.username }}
+              value: {{coalesce .Values.apiConfig.es.username .Values.config.es.username }}
 
             - name: ES_PASS
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.apiConfig.es.password.secretName }}
-                  key: {{ .Values.apiConfig.es.username }}
+                  name: {{coalesce .Values.apiConfig.es.password.secretName .Values.config.es.password.secretName }}
+                  key: {{coalesce .Values.apiConfig.es.username .Values.config.es.username }}
           {{- end }}
 
-          {{- if .Values.appConfig.index }}
             - name: INDEX
-              value: {{ .Values.appConfig.index }}
-          {{- end }}
+              value: {{ .Values.config.index }}
 
             - name: PORT
-              value: {{ coalesce .Values.appConfig.port .Values.apiConfig.port }}
+              value: {{ coalesce .Values.apiConfig.port .Values.config.port | quote }}
 
           {{- if .Values.apiConfig.extraEnv }}
             {{- range $key, $value := .Values.apiConfig.extraEnv}}
@@ -76,13 +72,13 @@ spec:
             {{- end }}
           {{- end }}
 
-          image: "{{ coalesce .Values.image.repository .Values.apiImage.repository }}:{{ coalesce .Values.image.tag .Values.apiImage.tag .Chart.AppVersion }}"
+          image: "{{ coalesce .Values.apiImage.repository .Values.image.repository }}:{{ coalesce .Values.apiImage.tag .Values.image.tag .Chart.AppVersion }}"
 
-          imagePullPolicy: {{ coalesce .Values.appImage.pullPolicy .Values.apiImage.pullPolicy }}
+          imagePullPolicy: {{ coalesce .Values.apiImage.pullPolicy .Values.image.pullPolicy }}
 
           ports:
-            - name: {{ .Chart.Name }}-api
-              containerPort: {{ coalesce .Values.appConfig.port .Values.apiConfig.port }}
+            - name: {{ .Chart.Name }}-server
+              containerPort: {{ coalesce .Values.apiConfig.port .Values.config.port }}
               protocol: TCP
 
           resources:
