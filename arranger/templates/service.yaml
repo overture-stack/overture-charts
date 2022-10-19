@@ -5,16 +5,20 @@ metadata:
   labels:
     {{- include "arranger.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.apiPort }}
-      targetPort: {{ .Chart.Name }}-api
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Chart.Name }}-server
       protocol: TCP
-      name: {{ .Chart.Name }}-api
+      name: {{ .Chart.Name }}-server
 
+  {{- if .Values.uiConfig.enabled }}
     - port: {{ .Values.service.uiPort }}
       targetPort: {{ .Chart.Name }}-ui
       protocol: TCP
       name: {{ .Chart.Name }}-ui
+  {{- end }}
+
   selector:
     {{- include "arranger.selectorLabels" . | nindent 4 }}
+
+  type: {{ .Values.service.type }}

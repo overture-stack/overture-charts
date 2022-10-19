@@ -1,69 +1,120 @@
 apiVersion: apps/v1
+
 kind: Deployment
+
 metadata:
   name: {{ include "arranger.fullname" . }}
   labels:
     {{- include "arranger.labels" . | nindent 4 }}
+
 spec:
 {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
 {{- end }}
+
   selector:
     matchLabels:
       {{- include "arranger.selectorLabels" . | nindent 6 }}
+
   template:
     metadata:
     {{- with .Values.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+
       labels:
         {{- include "arranger.selectorLabels" . | nindent 8 }}
+
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
+    {{- with .Values.affinity }}
+      affinity:
         {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "arranger.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+    {{- end }}
+
       containers:
-        - name: api
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.apiImage.repository }}:{{ .Values.apiImage.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.apiImage.pullPolicy }}
-          ports:
-            - name: {{ .Chart.Name }}-api
-              containerPort: {{ .Values.apiConfig.port }}
-              protocol: TCP
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+        - name: server
           env:
+            - name: DOCUMENT_TYPE
+              value: {{ .Values.config.documentType }}
+
             - name: ES_HOST
-              value: {{ .Values.apiConfig.es.host }}
-{{- if .Values.apiConfig.es.username }}
+              value: {{ coalesce .Values.apiConfig.es.host .Values.config.es.host }}
+
+          {{- if (coalesce .Values.apiConfig.es.username .Values.config.es.username) }}
             - name: ES_USER
-              value: {{ .Values.apiConfig.es.username }}
+              value: {{coalesce .Values.apiConfig.es.username .Values.config.es.username }}
+
             - name: ES_PASS
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.apiConfig.es.password.secretName }}
-                  key: {{ .Values.apiConfig.es.username }}
-{{- end }}
+                  name: {{coalesce .Values.apiConfig.es.password.secretName .Values.config.es.password.secretName }}
+                  key: {{coalesce .Values.apiConfig.es.username .Values.config.es.username }}
+          {{- end }}
 
-{{- if .Values.uiConfig.enabled }}
+            - name: INDEX
+              value: {{ .Values.config.index }}
+
+            - name: PORT
+              value: {{ coalesce .Values.apiConfig.port .Values.config.port | quote }}
+
+          {{- if .Values.apiConfig.extraEnv }}
+            {{- range $key, $value := .Values.apiConfig.extraEnv}}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+          {{- end }}
+
+          {{- if .Values.extraEnv }}
+            {{- range $key, $value := .Values.extraEnv}}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+          {{- end }}
+
+          image: "{{ coalesce .Values.apiImage.repository .Values.image.repository }}:{{ coalesce .Values.apiImage.tag .Values.image.tag .Chart.AppVersion }}"
+
+          imagePullPolicy: {{ coalesce .Values.apiImage.pullPolicy .Values.image.pullPolicy }}
+
+          ports:
+            - name: {{ .Chart.Name }}-server
+              containerPort: {{ coalesce .Values.apiConfig.port .Values.config.port }}
+              protocol: TCP
+
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+
+          volumeMounts:
+            - name: server-user-home-emptydir
+              mountPath: /home/node
+
+            - name: server-tmp-emptydir
+              mountPath: /tmp
+
+          {{- if .Values.serverConfigs }}
+            - name: server-configs
+              mountPath: /app/modules/server/configs/
+              readOnly: true
+          {{- end }}
+
+      {{- if .Values.uiConfig.enabled }}
         - name: ui
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.uiImage.repository }}:{{ .Values.uiImage.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.uiImage.pullPolicy }}
+
           ports:
             - name: {{ .Chart.Name }}-ui
               containerPort: {{ .Values.uiConfig.port }}
               protocol: TCP
+
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+
           env:
             - name: PORT
               value: {{ .Values.uiConfig.port | quote }}
@@ -71,35 +122,64 @@ spec:
               value: {{ .Values.uiConfig.serverUrl }}/admin/graphql
             - name: NGINX_CONF_PATH
               value: /etc/nginx/nginx.conf
+
           volumeMounts:
           - name: nginx-config
             mountPath: /etc/nginx/nginx.conf
             subPath: nginx.conf
+
           - name: nginx-config
             mountPath: /etc/nginx/env-config.js
             subPath: env-config.js
-          - name: nginx-cache
+
+          - name: nginx-cache-emptydir
             mountPath: /var/cache/nginx
-          - name: nginx-run
+
+          - name: nginx-run-emptydir
             mountPath: /var/run
-      volumes:
-        - name: nginx-config
-          configMap:
-            name: {{ include "arranger.fullname" . }}-nginx-config
-        - name: nginx-cache
-          emptyDir: {}
-        - name: nginx-run
-          emptyDir: {}
-{{- end }}
+      {{- end }}
+
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
+
+      serviceAccountName: {{ include "arranger.serviceAccountName" . }}
+
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+
+    {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
+    {{- end }}
+
+      volumes:
+        - name: server-user-home-emptydir
+          emptyDir: {}
+
+        - name: server-tmp-emptydir
+          emptyDir: {}
+
+      {{- if .Values.serverConfigs }}
+        - name: server-configs
+          configMap:
+            name: {{ include "arranger.fullname" . }}-server-configs
+      {{- end }}
+
+      {{- if .Values.uiConfig.enabled }}
+        - name: nginx-config
+          configMap:
+            name: {{ include "arranger.fullname" . }}-nginx-config
+
+        - name: nginx-cache-emptydir
+          emptyDir: {}
+
+        - name: nginx-run-emptydir
+          emptyDir: {}
       {{- end }}

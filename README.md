@@ -1,34 +1,83 @@
 # Overture Helm-charts
-Repository to keep helm charts for the overture different projects
 
-## Maestro
-See examples on how to use this chart in ./_examples
+Repository to keep helm charts for the overture projects.
 
 # How to package and publish:
 
-- `helm package ./mychart # Turn a chart into a versioned chart archive file`
+- Turn a chart into a versioned chart archive file
+
+```
+helm package ./mychart
+```
+
 - then copy the chart to the charts-server repository (another git repository in overture-stack)
-- then you need to reindex, see charts-server for instructions.
+- then you need to reindex — see charts-server for instructions.
+
+# Upgrade notes
 
 ## Arranger
 
-Arranger now uses configmaps to store nginx config files. When the chart is deployed `arranger-nginx-config` configmap is created with these files:
+This app now uses Helm configMaps to store a few config files.
+When the chart is deployed the following configmaps are created, containing these files:
 
-  nginx.conf
-  env-config.js
+### In Server (formerly API), `arranger-server-configs`
 
+- base.json
+- extended.json
+- facets.json
+- matchbox.json
+- table.json
 
-#### Arranger Parameters
+Each of these default to `{}`, and should customised by passing values into helm in the follwowing fashion
 
-| Name                        | Description                                     | Value |
-| -------------------------   | ----------------------------------------------- | ----- |
-| `uiConfig.port`             | Nginx listen port                               | `""`  |
-| `uiConfig.ReactAppBaseURL`  | Base url                                        | `""`  |
+```
+serverConfigs: {
+  baseConfigs: `path/to/base.json`,
+  extendedConfigs: `path/to/extended.json`,
+  ...
+}
+```
 
+### And in Admin UI, `arranger-nginx-config`
 
-## Upgrade notes
+- nginx.conf
+- env-config.js
 
-## Arranger
+| Customizable parameter     | Description       | Default |
+| -------------------------- | ----------------- | ------- |
+| `uiConfig.port`            | Nginx listen port | `""`    |
+| `uiConfig.ReactAppBaseURL` | Base url          | `""`    |
+
+Version 0.3.1
+
+all `api<values>` are now just `<values>`:
+
+Old:
+
+    apiConfig:
+      ...
+
+    apiImage:
+      ...
+
+    apiIngress:
+      ...
+
+New:
+
+    config:
+      ...
+
+    image:
+      ...
+
+    ingress:
+      ...
+
+also, new required config values:
+config:
+documentType: "" (i.e. graphql field; e.g. "file")
+index: "" (i.e. Elasticsearch index/alias to query)
 
 Version: 0.3.0
 
@@ -62,8 +111,8 @@ New:
             - path: /
               pathType: ImplementationSpecific
 
+## DMS-ui
 
-## Dms-ui
 Version: 1.1.0
 
 Old:
@@ -83,8 +132,8 @@ New:
             - path: /
               pathType: ImplementationSpecific
 
-
 ## Ego
+
 Version: 3.1.0
 
 Old:
@@ -115,9 +164,8 @@ New:
             - path: /
               pathType: ImplementationSpecific
 
-
-
 ## Lectern
+
 Version: 0.7.0
 
 Old:
@@ -138,6 +186,9 @@ New:
               pathType: ImplementationSpecific
 
 ## Maestro
+
+See examples on how to use this chart in ./\_examples
+
 Version: 0.9.0
 
 Old:
@@ -158,6 +209,7 @@ New:
               pathType: ImplementationSpecific
 
 ### Muse
+
 Version: 0.10.0
 
 Old:
@@ -200,7 +252,7 @@ New:
 
 ## Score
 
-Version:  0.12.0
+Version: 0.12.0
 
 Old:
 
@@ -239,7 +291,8 @@ New:
           paths:
             - path: /
               pathType: ImplementationSpecific
-## Stateless-svc 
+
+## Stateless-svc
 
 Version: 0.1.0
 
