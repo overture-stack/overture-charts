@@ -46,9 +46,9 @@ service:
 
 ingress:
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod-a
+    # cert-manager.io/cluster-issuer: letsencrypt-prod-a
   enabled: false
-  className: public
+  # className: private
   hosts:
     - host: muse.local
       paths:
