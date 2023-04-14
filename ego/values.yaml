@@ -5,13 +5,13 @@
 replicaCount: 1
 
 image:
-  repository: overture/ego
-  tag: 3.5.0
+  repository: ghcr.io/overture-stack/ego
+  tag: latest
   pullPolicy: IfNotPresent
 
 uiImage:
-  repository: overture/ego-ui
-  tag: release-3.0.1
+  repository: ghcr.io/overture-stack/ego-ui
+  tag: latest
   pullPolicy: IfNotPresent
 
 nameOverride: ""
