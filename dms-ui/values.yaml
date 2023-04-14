@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: overture/dms-ui
+  repository: ghcr.io/overture-stack/dms-ui
   tag: latest
   pullPolicy: IfNotPresent
 
