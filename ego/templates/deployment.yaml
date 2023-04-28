@@ -29,50 +29,53 @@ spec:
               value: "8081"
             - name: SPRING_PROFILES_ACTIVE
               value: {{ .Values.appConfig.activeProfiles }}
-            - name: GOOGLE_CLIENT_CLIENTID
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID
               value: {{ .Values.appConfig.googleClientID }}
-            - name: GOOGLE_CLIENT_CLIENTSECRET
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ template "ego.fullname" . }}
                   key: google-client-secret
-            - name: GOOGLE_CLIENT_PREESTABLISHEDREDIRECTURI
-              value: "https://{{ .Values.appConfig.host }}/api/oauth/login/google"
-            - name: ORCID_CLIENT_CLIENTID
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_GOOGLE_AUTHORIZATIONURI
+              value: {{ .Values.appConfig.googleAuthorizationUri }}
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_REDIRECTURI
+              value: "https://{{ .Values.appConfig.host }}/api/oauth/code/google"
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_ORCID_CLIENTID
               value: {{ .Values.appConfig.orcidClientID }}
-            - name: ORCID_CLIENT_CLIENTSECRET
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_ORCID_CLIENTSECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ template "ego.fullname" . }}
                   key: orcid-client-secret
-            - name: ORCID_CLIENT_PREESTABLISHEDREDIRECTURI
-              value: "https://{{ .Values.appConfig.host }}/api/oauth/login/orcid"
-            - name: LINKEDIN_CLIENT_CLIENTID
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_ORCID_REDIRECTURI
+              value: "https://{{ .Values.appConfig.host }}/api/oauth/code/orcid"
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_LINKEDIN_CLIENTID
               value: {{ .Values.appConfig.linkedInClientID }}
-            - name: LINKEDIN_CLIENT_CLIENTSECRET
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_LINKEDIN_CLIENTSECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ template "ego.fullname" . }}
                   key: linkedin-client-secret
-            - name: LINKEDIN_CLIENT_PREESTABLISHEDREDIRECTURI
-              value: "https://{{ .Values.appConfig.host }}/api/oauth/login/linkedin"
-            - name: GITHUB_CLIENT_CLIENTID
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_LINKEDIN_REDIRECTURI
+              value: "https://{{ .Values.appConfig.host }}/api/oauth/code/linkedin"
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENTID
               value: {{ .Values.appConfig.githubClientID }}
-            - name: GITHUB_CLIENT_CLIENTSECRET
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENTSECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ template "ego.fullname" . }}
                   key: github-client-secret
-            - name: GITHUB_CLIENT_PREESTABLISHEDREDIRECTURI
-            - name: FACEBOOK_CLIENT_CLIENTID
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_REDIRECTURI
+              value: "https://{{ .Values.appConfig.host }}/api/oauth/code/github"
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_FACEBOOK_CLIENTID
               value: {{ .Values.appConfig.facebookClientID | quote }}
-            - name: FACEBOOK_CLIENT_CLIENTSECRET
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_FACEBOOK_CLIENTSECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ template "ego.fullname" . }}
                   key: facebook-client-secret
-            - name: FACEBOOK_CLIENT_PREESTABLISHEDREDIRECTURI
-              value: "https://{{ .Values.appConfig.host }}/api/oauth/login/facebook"
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_FACEBOOK_REDIRECTURI
+              value: "https://{{ .Values.appConfig.host }}/api/oauth/code/facebook"
             - name: SPRING_DATASOURCE_URL
               value: {{ .Values.appConfig.databaseUrl }}
             - name: SPRING_DATASOURCE_PASSWORD
