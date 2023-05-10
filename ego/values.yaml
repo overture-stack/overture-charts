@@ -82,15 +82,15 @@ appConfig:
   host: ego.local
   keycloakClientID: ""
   keycloakClientSecret: ""
-  googleClientID: ""
+  googleClientID: 268575437964-n8v6a1mi50tka2klqsb5d38lco0poj74.apps.googleusercontent.com
   googleClientSecret: ""
   googleAuthorizationUri: ""
   linkedInClientID: ""
   linkedInClientSecret: ""
   githubClientID: ""
   githubClientSecret: ""
-  facebookClientID: ""
-  facebookClientSecret: ""
+  facebookClientID: 140524976574963 
+  facebookClientSecret: 2439abe7ae008bda7ab5cfdf706b4d66
   orcidClientID: ""
   orcidClientSecret: ""
   swaggerHost:
