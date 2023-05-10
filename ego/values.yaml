@@ -107,6 +107,13 @@ appConfig:
     cookieIsSecure: ""
   defaultProvider: ""
   uiKeycloakEnabled: ""
+  spring:
+    security:
+      oauth2:
+        client:
+          registration:
+            google:
+              clientId: 268575437964-n8v6a1mi50tka2klqsb5d38lco0poj74.apps.googleusercontent.com
 
 extraEnv: {}
 
