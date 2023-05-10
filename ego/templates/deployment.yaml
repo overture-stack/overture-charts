@@ -30,7 +30,7 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: {{ .Values.appConfig.activeProfiles }}
             - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID
-              value: {{ .Values.appConfig.googleClientID }}
+              value: {{ .Values.appConfig.spring.security.oauth2.client.registration.google.clientId }}
             - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET
               valueFrom:
                 secretKeyRef:
