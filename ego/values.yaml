@@ -80,18 +80,18 @@ appConfig:
   psqlSecretName: ""
   databaseUrl: ""
   host: ego.local
-  keycloakClientID: ""
+  keycloakClientID: placeholder
   keycloakClientSecret: ""
-  googleClientID: ""
+  googleClientID: placeholder
   googleClientSecret: ""
   googleAuthorizationUri: ""
-  linkedInClientID: ""
+  linkedInClientID: placeholder
   linkedInClientSecret: ""
-  githubClientID: ""
+  githubClientID: placeholder
   githubClientSecret: ""
-  facebookClientID: ""
+  facebookClientID: placeholder
   facebookClientSecret: ""
-  orcidClientID: ""
+  orcidClientID: placeholder
   orcidClientSecret: ""
   swaggerHost:
   swaggerBaseUrl:
