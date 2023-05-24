@@ -39,7 +39,7 @@ spec:
             - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_GOOGLE_AUTHORIZATIONURI
               value: {{ .Values.appConfig.googleAuthorizationUri }}
             - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_REDIRECTURI
-              value: "https://{{ .Values.appConfig.host }}/api/oauth/code/google"
+              value: "https://{{ .Values.appConfig.host }}/oauth/code/google"
             - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_ORCID_CLIENTID
               value: {{ .Values.appConfig.orcidClientID }}
             - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_ORCID_CLIENTSECRET
@@ -48,7 +48,7 @@ spec:
                   name: {{ template "ego.fullname" . }}
                   key: orcid-client-secret
             - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_ORCID_REDIRECTURI
-              value: "https://{{ .Values.appConfig.host }}/api/oauth/code/orcid"
+              value: "https://{{ .Values.appConfig.host }}/oauth/code/orcid"
             - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_LINKEDIN_CLIENTID
               value: {{ .Values.appConfig.linkedInClientID }}
             - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_LINKEDIN_CLIENTSECRET
@@ -57,7 +57,7 @@ spec:
                   name: {{ template "ego.fullname" . }}
                   key: linkedin-client-secret
             - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_LINKEDIN_REDIRECTURI
-              value: "https://{{ .Values.appConfig.host }}/api/oauth/code/linkedin"
+              value: "https://{{ .Values.appConfig.host }}/oauth/code/linkedin"
             - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENTID
               value: {{ .Values.appConfig.githubClientID }}
             - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENTSECRET
@@ -66,7 +66,7 @@ spec:
                   name: {{ template "ego.fullname" . }}
                   key: github-client-secret
             - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_REDIRECTURI
-              value: "https://{{ .Values.appConfig.host }}/api/oauth/code/github"
+              value: "https://{{ .Values.appConfig.host }}/oauth/code/github"
             - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_FACEBOOK_CLIENTID
               value: {{ .Values.appConfig.facebookClientID | quote }}
             - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_FACEBOOK_CLIENTSECRET
@@ -75,7 +75,7 @@ spec:
                   name: {{ template "ego.fullname" . }}
                   key: facebook-client-secret
             - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_FACEBOOK_REDIRECTURI
-              value: "https://{{ .Values.appConfig.host }}/api/oauth/code/facebook"
+              value: "https://{{ .Values.appConfig.host }}/oauth/code/facebook"
             - name: SPRING_DATASOURCE_URL
               value: {{ .Values.appConfig.databaseUrl }}
             - name: SPRING_DATASOURCE_PASSWORD
@@ -119,7 +119,7 @@ spec:
                   name: {{ template "ego.fullname" . }}
                   key: keycloak-client-secret
             - name: KEYCLOAK_CLIENT_PREESTABLISHEDREDIRECTURI
-              value: "https://{{ .Values.appConfig.host }}/api/oauth/login/keycloak"
+              value: "https://{{ .Values.appConfig.host }}/oauth/login/keycloak"
           ports:
             - name: http
               containerPort: 8081
@@ -142,7 +142,7 @@ spec:
           imagePullPolicy: {{ .Values.uiImage.pullPolicy }}
           env:
             - name: REACT_APP_API
-              value: "https://{{ .Values.appConfig.host }}/api"
+              value: "https://{{ .Values.appConfig.host }}"
             - name: REACT_APP_EGO_CLIENT_ID
               value: {{ .Values.appConfig.egoClientId }}
             - name: REACT_APP_KEYCLOAK_ENABLED
