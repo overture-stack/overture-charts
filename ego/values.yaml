@@ -33,7 +33,7 @@ ingressApi:
   hosts:
     - host: ego.local
       paths:
-        - path: /api/(.*)
+        - path: /(.*)
           pathType: ImplementationSpecific
 
   # tls:
