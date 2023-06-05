@@ -33,7 +33,7 @@ ingressApi:
   hosts:
     - host: ego.local
       paths:
-        - path: /(.*)
+        - path: /api/(.*)
           pathType: ImplementationSpecific
 
   # tls:
@@ -80,6 +80,7 @@ appConfig:
   psqlSecretName: ""
   databaseUrl: ""
   host: ego.local
+  apiPath: /api
   keycloakClientID: placeholder
   keycloakClientSecret: ""
   googleClientID: placeholder
