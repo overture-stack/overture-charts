@@ -147,6 +147,8 @@ spec:
               value: {{ .Values.appConfig.egoClientId }}
             - name: REACT_APP_KEYCLOAK_ENABLED
               value: {{ .Values.appConfig.uiKeycloakEnabled | quote }}
+            - name: REACT_APP_PASSPORT_ENABLED
+              value: {{ .Values.appConfig.uiPassportEnabled | quote }}
           ports:
             - name: http-ui
               containerPort: 8080
