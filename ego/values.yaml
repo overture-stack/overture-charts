@@ -108,6 +108,7 @@ appConfig:
     cookieIsSecure: ""
   defaultProvider: ""
   uiKeycloakEnabled: ""
+  uiPassportEnabled: ""
 
 extraEnv: {}
 
