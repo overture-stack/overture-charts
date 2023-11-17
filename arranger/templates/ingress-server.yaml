@@ -1,6 +1,7 @@
-{{- if (coalesce .Values.apiIngress.enabled .Values.ingress.enabled) -}}
+{{- $ingress := ternary .Values.apiIngress .Values.ingress .Values.apiIngress.enabled }}
+
+{{- if $ingress.enabled -}}
   {{- $fullName := include "arranger.fullname" . -}}
-  {{- $ingress := (coalesce .Values.apiIngress .Values.ingress) -}}
   {{- $svcPort := .Values.service.port -}}
   {{- $svcPortName := .Values.service.portName -}}
 

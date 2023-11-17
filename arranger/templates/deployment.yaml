@@ -35,28 +35,59 @@ spec:
       containers:
         - name: server
           env:
+            - name: CONFIG_PATH # route for config files within the container
+              value: {{ .Values.config.path }}
+
             - name: DOCUMENT_TYPE
               value: {{ .Values.config.documentType }}
 
-            - name: ES_HOST
-              value: {{ coalesce .Values.apiConfig.es.host .Values.config.es.host }}
+            - name: DOWNLOAD_STREAM_BUFFER_SIZE
+              value: {{ .Values.config.downloadStreamBufferSize | quote }}
 
-          {{- if (coalesce .Values.apiConfig.es.username .Values.config.es.username) }}
+            - name: MAX_DOWNLOAD_ROWS
+              value: {{ .Values.config.maxDownloadRows | quote }}
+
+            - name: MAX_RESULTS_WINDOW
+              value: {{ .Values.config.maxResultsWindow | quote }}
+
+            - name: PING_PATH
+              value: {{ .Values.config.pingEndpoint }}
+
+            - name: PORT
+              value: {{ coalesce .Values.apiConfig.port .Values.config.port | quote }}
+
+            - name: ROW_ID_FIELD_NAME
+              value: {{ .Values.config.rowIdFieldName }}
+
+          # Elasticsearch
+            - name: ES_HOST
+              value: {{ coalesce .Values.config.elasticsearch.host .Values.apiConfig.es.host }}
+
+            - name: ES_INDEX
+              value: {{ .Values.config.elasticsearch.index }}
+
+            {{- if (coalesce .Values.config.elasticsearch.username .Values.apiConfig.es.username) }}
             - name: ES_USER
-              value: {{coalesce .Values.apiConfig.es.username .Values.config.es.username }}
+              value: {{coalesce .Values.config.elasticsearch.username .Values.apiConfig.es.username }}
 
             - name: ES_PASS
               valueFrom:
                 secretKeyRef:
-                  name: {{coalesce .Values.apiConfig.es.password.secretName .Values.config.es.password.secretName }}
-                  key: {{coalesce .Values.apiConfig.es.username .Values.config.es.username }}
-          {{- end }}
+                  name: {{coalesce .Values.config.elasticsearch.password.secretName .Values.apiConfig.es.password.secretName }}
+                  key: {{coalesce .Values.config.elasticsearch.username .Values.apiConfig.es.username }}
+            {{- end }}
 
-            - name: INDEX
-              value: {{ .Values.config.index }}
+          # dev flags
+            - name: DEBUG
+              value: {{ .Values.config.dev.debug | quote }}
 
-            - name: PORT
-              value: {{ coalesce .Values.apiConfig.port .Values.config.port | quote }}
+            - name: ENABLE_ADMIN
+              value: {{ .Values.config.dev.admin | quote }}
+
+            - name: ENABLE_LOGS
+              value: {{ .Values.config.dev.logs | quote}}
+
+          # extras
 
           {{- if .Values.apiConfig.extraEnv }}
             {{- range $key, $value := .Values.apiConfig.extraEnv}}
@@ -76,16 +107,43 @@ spec:
 
           imagePullPolicy: {{ coalesce .Values.apiImage.pullPolicy .Values.image.pullPolicy }}
 
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.probes.liveness.path }}
+              port: {{ .Values.config.port }}
+            initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.probes.liveness.timeoutSeconds }}
+            periodSeconds: {{ .Values.probes.liveness.periodSeconds }}
+            failureThreshold: {{ .Values.probes.liveness.failureThreshold }}
+
           ports:
             - name: {{ .Chart.Name }}-server
               containerPort: {{ coalesce .Values.apiConfig.port .Values.config.port }}
               protocol: TCP
+
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.probes.readiness.path }}
+              port: {{ .Values.config.port }}
+            initialDelaySeconds: {{ .Values.probes.readiness.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.probes.readiness.timeoutSeconds }}
+            periodSeconds: {{ .Values.probes.readiness.periodSeconds }}
+            failureThreshold: {{ .Values.probes.readiness.failureThreshold }}
 
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
 
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+
+          startupProbe:
+            httpGet:
+              path: {{ .Values.probes.startup.path }}
+              port: {{ .Values.config.port }}
+            initialDelaySeconds: {{ .Values.probes.startup.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.probes.startup.timeoutSeconds }}
+            periodSeconds: {{ .Values.probes.startup.periodSeconds }}
+            failureThreshold: {{ .Values.probes.startup.failureThreshold }}
 
           volumeMounts:
             - name: server-user-home-emptydir
@@ -94,11 +152,9 @@ spec:
             - name: server-tmp-emptydir
               mountPath: /tmp
 
-          {{- if .Values.serverConfigs }}
             - name: server-configs
               mountPath: /app/modules/server/configs/
               readOnly: true
-          {{- end }}
 
       {{- if .Values.uiConfig.enabled }}
         - name: ui
@@ -166,11 +222,9 @@ spec:
         - name: server-tmp-emptydir
           emptyDir: {}
 
-      {{- if .Values.serverConfigs }}
         - name: server-configs
           configMap:
             name: {{ include "arranger.fullname" . }}-server-configs
-      {{- end }}
 
       {{- if .Values.uiConfig.enabled }}
         - name: nginx-config

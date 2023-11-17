@@ -9,16 +9,38 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 config:
-  documentType: ""
-  es:
-    host: "http://elasticsearch:9200"
-    password:
-      secretName: ""
-    username: "" #If empty or not defined, ES configured without auth
-  index: ""
+  documentType:
+  downloadStreamBufferSize: 2000
+  maxDownloadRows: 100
+  maxResultsWindow: 10000
+  path: ./configs # relative to the Server's own folder
   port: 5050
+  probesEndpoint: &probesEndpoint "/ping"
+  rowIdFieldName: id
 
-fullnameOverride: ""
+  components:
+    baseConfigs:
+    extendedConfigs:
+    facetsConfigs:
+    matchboxConfigs:
+    tableConfigs:
+
+  dev:
+    admin: false
+    debug: false
+    logs: false
+
+  elasticsearch:
+    host: http://elasticsearch:9200
+    index:
+    password:
+      secretName:
+    username: #If empty or not defined, ES configured without auth
+
+extraEnv:
+  # placeholder for undetermined custom env vars
+
+fullnameOverride:
 
 image:
   repository: ghcr.io/overture-stack/arranger-server
@@ -43,7 +65,7 @@ ingress:
         - arranger-server.local
       secretName: arranger-server.local
 
-nameOverride: ""
+nameOverride:
 
 nodeSelector: {}
 
@@ -53,6 +75,28 @@ podSecurityContext:
   runAsGroup: 9999
   runAsNonRoot: true
   runAsUser: 9999
+
+probes:
+  liveness:
+    path: *probesEndpoint
+    initialDelaySeconds: 30
+    timeoutSeconds: 2
+    periodSeconds: 8
+    failureThreshold: 1
+
+  readiness:
+    path: *probesEndpoint
+    initialDelaySeconds: 60
+    timeoutSeconds: 2
+    periodSeconds: 3
+    failureThreshold: 2
+
+  startup:
+    path: *probesEndpoint
+    initialDelaySeconds: 60
+    timeoutSeconds: 2
+    periodSeconds: 3
+    failureThreshold: 2
 
 replicaCount: 1
 
@@ -77,17 +121,13 @@ securityContext:
   runAsNonRoot: true
   runAsUser: 1000
 
-serverConfigs:
-  baseConfigs: "{}"
-  extendedConfigs: "{}"
-  facetsConfigs: "{}"
-  matchboxConfigs: "{}"
-  tableConfigs: "{}"
-
 service:
   type: ClusterIP
   port: 80
   portName: arranger-server
+
+  # deprecate
+  apiPort:
   uiPort: 81
   uiPortName: arranger-ui
 
@@ -98,9 +138,16 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: ""
+  name:
 
 tolerations: []
+
+# fallbacks
+baseConfigs:
+extendedConfigs:
+facetsConfigs:
+matchboxConfigs:
+tableConfigs:
 
 ####################
 # To be deprecated
@@ -113,13 +160,17 @@ apiConfig:
       secretName: ""
     username: ""
   port: ""
+  extraEnv:
+    # placeholder for undetermined custom env vars
 
 apiImage:
   pullPolicy: ""
   repository: ""
   tag: ""
 
-apiIngress: {}
+apiIngress:
+  enabled: false
+  hosts: []
 
 uiImage:
   repository: ghcr.io/overture-stack/arranger-ui
