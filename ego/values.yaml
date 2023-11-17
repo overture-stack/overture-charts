@@ -112,3 +112,5 @@ appConfig:
 
 extraEnv: {}
 
+networkPolicy:
+  enabled: false
