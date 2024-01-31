@@ -78,11 +78,13 @@ spec:
               value: "https://{{ .Values.appConfig.host }}{{ .Values.appConfig.apiPath }}/oauth/code/facebook"
             - name: SPRING_DATASOURCE_URL
               value: {{ .Values.appConfig.databaseUrl }}
+            - name: SPRING_DATASOURCE_USERNAME
+              value: {{ .Values.appConfig.psqlUsername }}
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.appConfig.psqlSecretName }}
-                  key: postgresql-password
+                  key: {{ .Values.appConfig.psqlSecretKey }}
             - name: SPRING_FLYWAY_ENABLED
               value: "true"
             - name: SPRING_FLYWAY_LOCATIONS
@@ -105,12 +107,6 @@ spec:
               value: {{ .Values.appConfig.refreshToken.cookieIsSecure | quote }}
             - name: REFRESHTOKEN_DOMAIN
               value: {{ .Values.appConfig.host }}
-{{- if .Values.extraEnv }}
-  {{ range $key, $value := .Values.extraEnv }}
-            - name: {{ $key }}
-              value: {{ $value | quote }}
-  {{- end }}
-{{- end }}
             - name: KEYCLOAK_CLIENT_CLIENTID
               value: {{ .Values.appConfig.keycloakClientID }}
             - name: KEYCLOAK_CLIENT_CLIENTSECRET
@@ -120,6 +116,12 @@ spec:
                   key: keycloak-client-secret
             - name: KEYCLOAK_CLIENT_PREESTABLISHEDREDIRECTURI
               value: "https://{{ .Values.appConfig.host }}{{ .Values.appConfig.apiPath }}/oauth/login/keycloak"
+          {{- if .Values.extraEnv }}
+            {{ range $key, $value := .Values.extraEnv }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+          {{- end }}
           ports:
             - name: http
               containerPort: 8081

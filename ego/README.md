@@ -14,10 +14,11 @@ This chart bootstraps an EGO deployment on a [Kubernetes](https://kubernetes.io)
 - Ingress that manages external access to the services in a cluster (if you want to enable ingress)
 
 ## Installing the Chart
+
 To install the chart with the release name `my-release`:
 
 ```console
-$ helm install --name my-release overture/ego
+$ helm install my-release overture/ego
 ```
 
 The command deploys EGO on the Kubernetes cluster with the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -31,25 +32,24 @@ $ helm delete my-release
 The command removes all the Kubernetes components associated with the chart and delete the release.
 
 ## Configuration
+
 The following tables lists the configurable parameters of the EGO chart and their default values.
 
-| Parameters                                      | Description                                 | Default                                                                     |
-|:------------------------------------------------|:--------------------------------------------|:----------------------------------------------------------------------------|
-| `replicaCount`                                  | How many instances of EGO servers to be run | 1                                                                           |
-| `image.repository`                              | EGO image name                              | overture/ego                                                                |
-| `image.tag`                                     | EGO image tag                               | `latest`                                                                   |
-| `uiImage.tag`                                   | EGO ui image tag                               | `latest`                                                                   |
-| `image.pullPolicy`                              | EGO image pull policy                       | `IfNotPresent`                                                              |
-| `ingress.enabled`                               | EGO backend server port                     | `false`                                                                      |
-| `ingress.host`                                  | Ingress hosts                               | `ego.local`                                       |
-| `appConfig.host`                                | Host name for EGO backend server            | `ego.local`                                       |
-| `appConfig.linkedInClientID`                    | LinkedIn Client ID                          | `nil`                                                                       |
-| `appConfig.linkedInClientSecret`                | LinkedIn Client Secret                      | `nil`                                                                       |
-| `appConfig.githubClientID`                      | GitHub Client ID                            | `nil`                                                                       |
-| `appConfig.githubClientSecret`                  | GitHub Client Secret                        | `nil`                                                                       |
-| `postgres`                                      | Configuration for PostgreSQL subchart       | `{postgresUsername: postgres, postgresPassword: password, postgresDb: ego}` |
-
-
+| Parameters                       | Description                                 | Default                                                                     |
+| :------------------------------- | :------------------------------------------ | :-------------------------------------------------------------------------- |
+| `replicaCount`                   | How many instances of EGO servers to be run | 1                                                                           |
+| `image.repository`               | EGO image name                              | overture/ego                                                                |
+| `image.tag`                      | EGO image tag                               | `latest`                                                                    |
+| `uiImage.tag`                    | EGO ui image tag                            | `latest`                                                                    |
+| `image.pullPolicy`               | EGO image pull policy                       | `IfNotPresent`                                                              |
+| `ingress.enabled`                | EGO backend server port                     | `false`                                                                     |
+| `ingress.host`                   | Ingress hosts                               | `ego.local`                                                                 |
+| `appConfig.host`                 | Host name for EGO backend server            | `ego.local`                                                                 |
+| `appConfig.linkedInClientID`     | LinkedIn Client ID                          | `nil`                                                                       |
+| `appConfig.linkedInClientSecret` | LinkedIn Client Secret                      | `nil`                                                                       |
+| `appConfig.githubClientID`       | GitHub Client ID                            | `nil`                                                                       |
+| `appConfig.githubClientSecret`   | GitHub Client Secret                        | `nil`                                                                       |
+| `postgres`                       | Configuration for PostgreSQL subchart       | `{postgresUsername: postgres, postgresPassword: password, postgresDb: ego}` |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 

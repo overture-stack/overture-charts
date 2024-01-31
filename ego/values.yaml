@@ -70,45 +70,43 @@ rbac:
     # for vault kubernetes integration
     tokenReview: true
 
-  psqlSecretName: registry-postgres-postgresql
-  databaseUrl: jdbc:postgresql://registry-postgres-postgresql.rdpc-collab-qa:5432/registry
-
-
 appConfig:
   # api configs
   activeProfiles: auth,grpc
-  psqlSecretName: ""
-  databaseUrl: ""
-  host: ego.local
   apiPath: /api
-  keycloakClientID: placeholder
-  keycloakClientSecret: ""
-  googleClientID: placeholder
-  googleClientSecret: ""
-  googleAuthorizationUri: ""
-  linkedInClientID: placeholder
-  linkedInClientSecret: ""
-  githubClientID: placeholder
-  githubClientSecret: ""
+  databaseUrl: ""
   facebookClientID: placeholder
   facebookClientSecret: ""
+  githubClientID: placeholder
+  githubClientSecret: ""
+  googleAuthorizationUri: ""
+  googleClientID: placeholder
+  googleClientSecret: ""
+  host: ego.local
+  keycloakClientID: placeholder
+  keycloakClientSecret: ""
+  linkedInClientID: placeholder
+  linkedInClientSecret: ""
   orcidClientID: placeholder
   orcidClientSecret: ""
-  swaggerHost:
+  psqlSecretName: ego-postgres-postgresql
+  psqlSecretKey: postgres-password
+  psqlUsername: ""
   swaggerBaseUrl:
+  swaggerHost:
+
   # ui configs
-  egoClientId: ego
   apiTokenDurationDays: "30"
+  defaultProvider: ""
+  egoClientId: ego
   jwt:
+    appDurationMs: "10800000"
     secret: ""
     userDurationMs: "10800000"
-    appDurationMs: "10800000"
   refreshToken:
-    durationMs: "43200000"
     cookieIsSecure: ""
-  defaultProvider: ""
+    durationMs: "43200000"
   uiKeycloakEnabled: ""
   uiPassportEnabled: ""
 
 extraEnv: {}
-
