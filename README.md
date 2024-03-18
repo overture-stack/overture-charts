@@ -273,6 +273,21 @@ New:
 
 ## Song
 
+Version: 0.12.3
+
+Allows using your own existing postgres instance.
+Set `useInternalDep` as `false` to prevent starting a "song-postgres" pod.
+
+New params: (and their default values)
+
+    postgres:
+      host: "song.fullname"-postgres.
+      port: 5432
+      secret:
+        name: "song.fullname"-postgres
+        key: postgres-password
+      useInternalDep: true
+
 Version: 0.12.0
 
 Old:

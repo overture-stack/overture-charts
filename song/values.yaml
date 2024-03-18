@@ -88,9 +88,15 @@ appConfig:
       systemScope: score.WRITE
 
 postgres:
+  host: "" # defaults to {song.fullname}-postgres
+  port: 5432
   postgresUsername: postgres
   postgresPassword: password
   postgresDb: song
+  secret:
+    key: postgres-password
+    name: "" # defaults to {song.fullname}-postgres
+  useInternalDep: true
 
 podSecurityContext:
   runAsGroup: 9999
