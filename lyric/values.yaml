@@ -53,15 +53,18 @@ tolerations: []
 affinity: {}
 
 appConfig:
-  port: 3030
-  uploadLimit:
   dbHost:
-  dbPort:
   dbName:
-  dbUser:
   dbPassword:
+  dbPort:
+  dbUser:
+  idCustomAlphabet:
+  idCustomSize:
+  idUseLocal:
   lecternUrl:
   logLevel:
+  port: 3030
+  uploadLimit:
 
 extraEnv: {}
 
