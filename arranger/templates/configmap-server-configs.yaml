@@ -10,18 +10,33 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 
-{{- if .Values.serverConfigs }}
 data:
+  {{- $baseConfigs := coalesce .Values.config.components.baseConfigs .Values.baseConfigs -}}
+  {{- if $baseConfigs }}
   base.json: |
-    {{- include "common.tplvalues.render" ( dict "value" .Values.serverConfigs.baseConfigs "context" $ ) | nindent 4 }}
+    {{- include "common.tplvalues.render" ( dict "value" $baseConfigs "context" $ ) | fromYaml | toPrettyJson | nindent 4 }}
+  {{- end }}
+
+  {{- $extendedConfigs := coalesce .Values.config.components.extendedConfigs .Values.extendedConfigs -}}
+  {{- if $extendedConfigs }}
   extended.json: |
-    {{- include "common.tplvalues.render" ( dict "value" .Values.serverConfigs.extendedConfigs "context" $ ) | nindent 4 }}
+    {{- include "common.tplvalues.render" ( dict "value" $extendedConfigs "context" $ ) | fromYaml | toPrettyJson | nindent 4 }}
+  {{- end }}
+
+  {{- $facetsConfigs := coalesce .Values.config.components.facetsConfigs .Values.facetsConfigs -}}
+  {{- if $facetsConfigs }}
   facets.json: |
-    {{- include "common.tplvalues.render" ( dict "value" .Values.serverConfigs.facetsConfigs "context" $ ) | nindent 4 }}
+    {{- include "common.tplvalues.render" ( dict "value" $facetsConfigs "context" $ ) | fromYaml | toPrettyJson | nindent 4 }}
+  {{- end }}
+
+  {{- $matchboxConfigs := coalesce .Values.config.components.matchboxConfigs .Values.matchboxConfigs -}}
+  {{- if $matchboxConfigs }}
   matchbox.json: |
-    {{- include "common.tplvalues.render" ( dict "value" .Values.serverConfigs.matchboxConfigs "context" $ ) | nindent 4 }}
+    {{- include "common.tplvalues.render" ( dict "value" $matchboxConfigs "context" $ ) | fromYaml | toPrettyJson | nindent 4 }}
+  {{- end }}
+
+  {{- $tableConfigs := coalesce .Values.config.components.tableConfigs .Values.tableConfigs -}}
+  {{- if $tableConfigs }}
   table.json: |
-    {{- include "common.tplvalues.render" ( dict "value" .Values.serverConfigs.tableConfigs "context" $ ) | nindent 4 }}
-
-{{- end }}
-
+    {{- include "common.tplvalues.render" ( dict "value" $tableConfigs "context" $ ) | fromYaml | toPrettyJson | nindent 4 }}
+  {{- end }}

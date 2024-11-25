@@ -1,48 +1,66 @@
-# Default values for muse.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+affinity: {}
 
-replicaCount: 1
+appConfig:
+  ariaClient:
+    clientId: "adminId"
+    # clientSecret: "adminSecret"x
+    # if cleintSecret is not set random secret generated, see './tempates/secret.yaml'
+    retryDelaySec: 10
+    retryMaxAttempts: 3
+    scoreRootUrl: "http://localhost:8087/"
+    songRootUrl: "http://localhost:8089/"
+    tokenUrl: "http://localhost:8081/oauth/token"
+
+  auth:
+    jwtPublicKeyUrl: ""
+    scopes:
+      study:
+        prefix: "muse."
+        suffix: ".WRITE"
+      system: DOMAIN.WRITE
+
+  codecConfig:
+    maxHeadersSize: 16384
+
+  cors:
+    domainPatterns:
+      - "http://localhost:3000"
+      - "https://localhost:3000"
+    maxAge: 3600
+
+  port: 8080
+
+  postgres:
+    database: muse
+    host: ""
+    maxPoolSize: 20
+    passwordSecret: ""
+    port: 5432
+    username: postgres
+
+  spring:
+    profiles:
+      active: "default"
+
+  submitUpload:
+    maxInFlight: 5
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+fullnameOverride: ""
 
 image:
-  repository: ghcr.io/cancogen-virus-seq/muse
   pullPolicy: IfNotPresent
+  repository: ghcr.io/virusseq/muse
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
 imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
-
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Annotations to add to the service account
-  annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
-
-podAnnotations: {}
-
-podSecurityContext:
-  runAsGroup: 9999
-  runAsNonRoot: true
-  runAsUser: 9999
-
-securityContext:
-  {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
-
-service:
-  type: ClusterIP
-  port: 80
-  portName: http
 
 ingress:
   annotations:
@@ -59,6 +77,17 @@ ingress:
   #     - muse.local
   #     secretName: muse.local
 
+nameOverride: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  runAsGroup: 9999
+  runAsNonRoot: true
+  runAsUser: 9999
+
+replicaCount: 1
+
 resources:
   {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -72,73 +101,49 @@ resources:
   #   cpu: 100m
   #   memory: 128Mi
 
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
+securityContext:
+  {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  port: 80
+  portName: http
+  type: ClusterIP
+
+serviceAccount:
+  # Annotations to add to the service account
+  annotations: {}
+  # Specifies whether a service account should be created
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
 
 nodeSelector: {}
 
 tolerations: []
 
-affinity: {}
-
-appConfig:
-  port: 8080
-  spring:
-    profiles:
-      active: "default"
-  postgres:
-    host: ""
-    port: 5432
-    database: muse
-    username: postgres
-    passwordSecret: ""
-    maxPoolSize: 20
-  auth:
-    jwtPublicKeyUrl: ""
-    scopes:
-      study:
-        prefix: "muse."
-        suffix: ".WRITE"
-      system: DOMAIN.WRITE
-  ariaClient:
-    songRootUrl: "http://localhost:8089/"
-    scoreRootUrl: "http://localhost:8087/"
-    tokenUrl: "http://localhost:8081/oauth/token"
-    clientId: "adminId"
-    # if cleintSecret is not set random secret generated, see './tempates/secret.yaml'
-    # clientSecret: "adminSecret"x
-    retryMaxAttempts: 3
-    retryDelaySec: 10
-  cors:
-    domainPatterns:
-      - "http://localhost:3000"
-      - "https://localhost:3000"
-    maxAge: 3600
-  codecConfig:
-    maxHeadersSize: 16384
-  submitUpload:
-    maxInFlight: 5
-
 probes:
   liveness:
-    path: /actuator/health
-    initialDelaySeconds: 30
-    timeoutSeconds: 2
-    periodSeconds: 8
     failureThreshold: 1
+    initialDelaySeconds: 30
+    path: /actuator/health
+    periodSeconds: 8
+    timeoutSeconds: 2
   readiness:
-    path: /actuator/health
-    initialDelaySeconds: 60
-    timeoutSeconds: 2
-    periodSeconds: 3
     failureThreshold: 2
+    initialDelaySeconds: 60
+    path: /actuator/health
+    periodSeconds: 3
+    timeoutSeconds: 2
   startup:
-    path: /actuator/health
-    initialDelaySeconds: 60
-    timeoutSeconds: 2
-    periodSeconds: 3
     failureThreshold: 2
+    initialDelaySeconds: 60
+    path: /actuator/health
+    periodSeconds: 3
+    timeoutSeconds: 2

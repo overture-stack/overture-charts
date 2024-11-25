@@ -1,12 +1,12 @@
-# Default values for rollcall.
+# Default values for lectern.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: ghcr.io/overture-stack/rollcall
-  tag: edge
+  repository: ghcr.io/overture-stack/lyric
+  tag: latest
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -19,19 +19,19 @@ service:
   portName: http
 
 ingress:
-  # annotations:
-  #   cert-manager.io/cluster-issuer: letsencrypt
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod-a
   # className: private
   enabled: false
   hosts:
-    - host: rollcall.local
+    - host: lyric.local
       paths:
         - path: /
           pathType: ImplementationSpecific
   # tls:
   #   - hosts:
-  #     - rollcall.local
-  #     secretName: rollcall.local
+  #     - lyric.local
+  #     secretName: lyric.local
 
 resources:
   {}
@@ -53,15 +53,20 @@ tolerations: []
 affinity: {}
 
 appConfig:
-  SPRING_PROFILES_ACTIVE: test
-  SERVER_PORT: 9001
-  ELASTICSEARCH_HOST: http://localhost
-  ELASTICSEARCH_PORT: 9200
-  ROLLCALL_ALIASES_0_ALIAS: data_centric
-  ROLLCALL_ALIASES_0_ENTITY: data
-  ROLLCALL_ALIASES_0_TYPE: centric
+  dbHost:
+  dbName:
+  dbPassword:
+  dbPort:
+  dbUser:
+  idCustomAlphabet:
+  idCustomSize:
+  idUseLocal:
+  lecternUrl:
+  logLevel:
+  port: 3030
+  uploadLimit:
 
-extraEnv: []
+extraEnv: {}
 
 podSecurityContext:
   runAsGroup: 9999
@@ -72,4 +77,4 @@ podSecurityContext:
 rbac:
   create:
     # for vault kubernetes integration
-    tokenReview: false
+    tokenReview: true

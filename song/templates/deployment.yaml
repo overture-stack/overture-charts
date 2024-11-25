@@ -1,7 +1,11 @@
+{{- $songFullName := include "song.fullname" . -}}
+{{- $defaultPostgresHost := printf "%s-postgres" $songFullName -}}
+{{- $postgresHost := coalesce .Values.postgres.host $defaultPostgresHost  -}}
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "song.server.fullname" . }}
+  name: {{ $songFullName }}
   labels:
     app: {{ include "song.name" . }}
     chart: {{ include "song.chart" . }}
@@ -26,46 +30,6 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
-{{- if .Values.backup.enabled }}
-        - name: song-db-backup
-          image: "{{ .Values.backupImage.repository }}:{{ .Values.backupImage.tag }}"
-          imagePullPolicy: {{ .Values.backupImage.pullPolicy }}
-          env:
-            - name: BACKUP_CRONSCHEDULE
-              value: {{ .Values.backup.schedule | quote }}
-            - name: BACKUP_PREFIX
-              value: "{{ .Values.backup.prefix }}_{{ .Values.image.tag }}"
-            - name: BACKUP_AUTOCREATEBUCKET
-              value: {{ .Values.backup.autoCreateBucket | quote }}
-            - name: BACKUP_PGDUMPEXEPATH
-              value: "/usr/bin/pg_dump"
-            - name: S3_ACCESSKEY
-              value: {{ .Values.backup.s3.accessKey }}
-            - name: S3_SECRETKEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ template "song.fullname" . }}
-                  key: s3-secretKey
-            - name: S3_BUCKETNAME
-              value: {{ .Values.backup.s3.bucketName }}
-            - name: S3_BUCKETPATH
-              value: {{ .Values.backup.s3.bucketPath }}
-            - name: S3_ENDPOINTURL
-              value: {{ .Values.backup.s3.endpointUrl }}
-            - name: DB_NAME
-              value: {{ .Values.postgres.postgresDb }}
-            - name: DB_HOST
-              value: {{ template "song.fullname" . }}-postgres
-            - name: DB_PORT
-              value: "5432"
-            - name: DB_USER
-              value: {{ .Values.postgres.postgresUsername }}
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ template "song.fullname" . }}-postgres
-                  key: postgres-password
-{{- end }}
         - name: song-server
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -107,7 +71,7 @@ spec:
                 secretKeyRef:
                   name: {{ template "song.fullname" . }}
                   key: score-accessToken
-            {{- if (contains "score-client-cred" .Values.appConfig.profiles) }}
+          {{- if (contains "score-client-cred" .Values.appConfig.profiles) }}
             - name: SCORE_CLIENTCREDENTIALS_SECRET
               valueFrom:
                 secretKeyRef:
@@ -119,27 +83,27 @@ spec:
               value: {{ .Values.appConfig.score.clientCredentials.tokenUrl }}
             - name: SCORE_CLIENTCREDENTIALS_SYSTEMSCOPE
               value: {{ .Values.appConfig.score.clientCredentials.systemScope }}
-            {{- end }}
+          {{- end }}
             - name: SPRING_FLYWAY_ENABLED
               value: {{ .Values.appConfig.flyway.enabled | quote }}
             - name: SPRING_FLYWAY_LOCATIONS
               value: {{ .Values.appConfig.flyway.locations}}
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://{{ template "song.fullname" . }}-postgres:5432/{{ .Values.postgres.postgresDb }}?stringtype=unspecified
+              value: jdbc:postgresql://{{ $postgresHost }}:{{ .Values.postgres.port }}/{{ .Values.postgres.postgresDb }}?stringtype=unspecified
             - name: SPRING_DATASOURCE_USERNAME
               value: {{ .Values.postgres.postgresUsername }}
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ template "song.fullname" . }}-postgres
-                  key: postgres-password
-
-{{- if .Values.extraEnv }}
-  {{ range $key, $value := .Values.extraEnv }}
+                  name: {{ coalesce .Values.postgres.secret.name $postgresHost }}
+                  key: {{ .Values.postgres.secret.key }}
+          {{- if .Values.extraEnv }}
+            {{ range $key, $value := .Values.extraEnv }}
             - name: {{ $key }}
               value: {{ $value | quote }}
-  {{- end }}
-{{- end }}
+            {{- end }}
+          {{- end }}
+
           ports:
             - containerPort: 8080
           # livenessProbe:
@@ -151,16 +115,57 @@ spec:
               path: /swagger-ui.html
               port: 8080
           resources:
-{{ toYaml .Values.resources | indent 12 }}
+            {{ toYaml .Values.resources | indent 12 }}
+
+      {{- if .Values.backup.enabled }}
+        - name: song-db-backup
+          image: "{{ .Values.backupImage.repository }}:{{ .Values.backupImage.tag }}"
+          imagePullPolicy: {{ .Values.backupImage.pullPolicy }}
+          env:
+            - name: BACKUP_CRONSCHEDULE
+              value: {{ .Values.backup.schedule | quote }}
+            - name: BACKUP_PREFIX
+              value: "{{ .Values.backup.prefix }}_{{ .Values.image.tag }}"
+            - name: BACKUP_AUTOCREATEBUCKET
+              value: {{ .Values.backup.autoCreateBucket | quote }}
+            - name: BACKUP_PGDUMPEXEPATH
+              value: "/usr/bin/pg_dump"
+            - name: S3_ACCESSKEY
+              value: {{ .Values.backup.s3.accessKey }}
+            - name: S3_SECRETKEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "song.fullname" . }}
+                  key: s3-secretKey
+            - name: S3_BUCKETNAME
+              value: {{ .Values.backup.s3.bucketName }}
+            - name: S3_BUCKETPATH
+              value: {{ .Values.backup.s3.bucketPath }}
+            - name: S3_ENDPOINTURL
+              value: {{ .Values.backup.s3.endpointUrl }}
+            - name: DB_NAME
+              value: {{ .Values.postgres.postgresDb }}
+            - name: DB_HOST
+              value: {{ $postgresHost }}
+            - name: DB_PORT
+              value: {{ .Values.postgres.port | quote }}
+            - name: DB_USER
+              value: {{ .Values.postgres.postgresUsername }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ coalesce .Values.postgres.secretName $postgresHost }}
+                  key: {{ .Values.postgres.secretKey }}
+      {{- end }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
-{{ toYaml . | indent 8 }}
+        {{ toYaml . | indent 8 }}
     {{- end }}
     {{- with .Values.affinity }}
       affinity:
-{{ toYaml . | indent 8 }}
+        {{ toYaml . | indent 8 }}
     {{- end }}
     {{- with .Values.tolerations }}
       tolerations:
-{{ toYaml . | indent 8 }}
+        {{ toYaml . | indent 8 }}
     {{- end }}

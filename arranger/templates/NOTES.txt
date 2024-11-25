@@ -1,41 +1,54 @@
-1. API URL:
-{{- if .Values.apiIngress.enabled }}
+{{- if .Values.apiConfig.es.host }}1. {{ end -}}
+Server URL:
 
-{{- range $host := .Values.apiIngress.hosts }}
-  {{- range .paths }}
-  http{{ if $.Values.apiIngress.tls }}s{{ end }}://{{ $host.host }}{{ .path }}
+{{- $ingress := ternary .Values.apiIngress .Values.ingress .Values.apiIngress.enabled }}
+{{- if $ingress.enabled }}
+  {{- range $host := $ingress.hosts }}
+    {{- range .paths }}
+  http{{ if $ingress.tls }}s{{ end }}://{{ $host.host }}{{ .path }}
+    {{- end }}
   {{- end }}
-{{- end }}
 
 {{- else if contains "NodePort" .Values.service.type }}
   export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "arranger.fullname" . }})
+
   export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+
   echo http://$NODE_IP:$NODE_PORT
+
 {{- else if contains "LoadBalancer" .Values.service.type }}
-     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "arranger.fullname" . }}'
+  NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+          You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "arranger.fullname" . }}'
+
   export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "arranger.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
-  echo http://$SERVICE_IP:{{ .Values.service.apiPort }}
-{{- if .Values.uiConfig.enabled }}
+
+  echo http://$SERVICE_IP:
+  {{- coalesce .Values.service.apiPort .Values.service.port }}
+
+  {{- if .Values.uiConfig.enabled }}
   echo http://$SERVICE_IP:{{ .Values.service.uiPort }}
-{{- end }}
+  {{- end }}
+
 {{- else if contains "ClusterIP" .Values.service.type }}
   export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "arranger.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
-  echo "Visit http://127.0.0.1:8080 to use the API"
+
+  echo "Visit http://127.0.0.1:8080 to use the Server"
+
   kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:{{ .Values.apiConfig.port }}
-{{- if .Values.uiConfig.enabled }}
-  echo "Visit http://127.0.0.1:8081 to use the UI"
-  kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8081:{{ .Values.uiConfig.port }}
-{{- end }}
 {{- end }}
 
 {{- if .Values.uiConfig.enabled }}
-2. UI URL:
-{{- if .Values.uiIngress.enabled }}
-{{- range $host := .Values.uiIngress.hosts }}
-  {{- range .paths }}
-  http{{ if $.Values.uiIngress.tls }}s{{ end }}://{{ $host.host }}{{ .path }}
+  {{- if contains "ClusterIP" .Values.service.type }}
+  echo "Visit http://127.0.0.1:8081 to use the UI"
+  kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8081:{{ .Values.uiConfig.port }}
   {{- end }}
-{{- end }}
-{{- end }}
+
+  {{- if .Values.uiIngress.enabled }}
+2. Admin UI URL:
+    {{- range $host := .Values.uiIngress.hosts }}
+      {{- range .paths }}
+  http{{ if $.Values.uiIngress.tls }}s{{ end }}://{{ $host.host }}{{ .path }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
 {{- end }}

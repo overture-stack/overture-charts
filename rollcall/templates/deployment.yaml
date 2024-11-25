@@ -32,12 +32,18 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-{{- if .Values.appConfig }}
-  {{ range $key, $value := .Values.appConfig }}
+        {{- if .Values.appConfig }}
+          {{ range $key, $value := .Values.appConfig }}
             - name: {{ $key }}
               value: {{ $value | quote }}
-  {{- end }}
-{{- end }}
+          {{- end }}
+        {{- end }}
+        {{- if .Values.extraEnv }}
+          {{ range $key, $value := .Values.extraEnv }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+          {{- end }}
+        {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.appConfig.SERVER_PORT }}

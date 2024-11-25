@@ -6,7 +6,7 @@ metadata:
     {{- include "arranger.labels" . | nindent 4 }}
 spec:
   ports:
-    - port: {{ .Values.service.port }}
+    - port: {{ coalesce .Values.service.apiPort .Values.service.port }}
       targetPort: {{ .Chart.Name }}-server
       protocol: TCP
       name: {{ .Chart.Name }}-server
