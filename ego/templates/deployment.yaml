@@ -75,11 +75,13 @@ spec:
               value: "https://{{ .Values.appConfig.host }}/api/oauth/login/facebook"
             - name: SPRING_DATASOURCE_URL
               value: {{ .Values.appConfig.databaseUrl }}
+            {{- if .Values.appConfig.psqlSecretName }}
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.appConfig.psqlSecretName }}
                   key: postgresql-password
+            {{- end  }}
             - name: SPRING_FLYWAY_ENABLED
               value: "true"
             - name: SPRING_FLYWAY_LOCATIONS
