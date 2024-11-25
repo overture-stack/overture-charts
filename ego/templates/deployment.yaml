@@ -80,11 +80,13 @@ spec:
               value: {{ .Values.appConfig.databaseUrl }}
             - name: SPRING_DATASOURCE_USERNAME
               value: {{ .Values.appConfig.psqlUsername }}
+            {{- if .Values.appConfig.psqlSecretName }}
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.appConfig.psqlSecretName }}
                   key: {{ .Values.appConfig.psqlSecretKey }}
+            {{- end  }}
             - name: SPRING_FLYWAY_ENABLED
               value: "true"
             - name: SPRING_FLYWAY_LOCATIONS
